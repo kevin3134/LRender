@@ -9,6 +9,5 @@ int main(){
     window_create("LRender", 1000, 1000);
 
     Sleep(10000);
-
     return 0;
 }
