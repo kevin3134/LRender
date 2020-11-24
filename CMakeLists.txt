@@ -1,5 +1,5 @@
 ###########################
-# tinyrender project CMakeList
+# LRender project CMakeList
 # include 
 ###########################
 cmake_minimum_required(VERSION 3.0)
@@ -12,11 +12,24 @@ include_directories(${PROJECT_SOURCE_DIR}/include)
 
 add_executable(LRender 
     src/main.cpp 
-    src/display.cpp
     src/image.cpp
     include/display.h
     include/image.h
     include/macro.h
 )
+
+if(WIN32)
+    set(SOURCES ${SOURCES} src/displayWin.cpp)
+    message(STATUS "compile in WIN")
+elseif(APPLE)
+    set(SOURCES ${SOURCES} src/displayMac.m)
+    #set(SOURCES ${SOURCES} src/displayTest.cpp)
+    message(STATUS "compile in MAC")
+else()
+    message(STATUS "compile in other")
+endif()
+
+
+
 
  
