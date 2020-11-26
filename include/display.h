@@ -4,7 +4,7 @@
 #include "image.h"
 
 typedef struct window window_t;
-typedef enum {KEY_A, KEY_D, KEY_S, KEY_W, KEY_SPACE, KEY_NUM} keycode_t;
+typedef enum {KEY_A, KEY_D, KEY_S, KEY_W, KEY_SPACE, KEY_ESC, KEY_NUM} keycode_t;
 typedef enum {BUTTON_L, BUTTON_R, BUTTON_NUM} button_t;
 typedef struct {
     void (*key_callback)(window_t *window, keycode_t key, int pressed);
@@ -31,7 +31,7 @@ void input_query_cursor(window_t *window, float *xpos, float *ypos);
 void input_set_callbacks(window_t *window, callbacks_t callbacks);
 
 /* misc platform functions */
-//float platform_get_time(void);
-//void platform_init_path(void);
+float platform_get_time(void);
+void platform_init_path(void);
 
 #endif
