@@ -215,4 +215,12 @@ struct mat4f{
 typedef mat4f mat4f_t;
 
 
+
+//commonly used function
+
+template <class t> t lrMin(t t1, t t2){return t1 < t2 ? t1 : t2;}
+template <class t> t lrMax(t t1, t t2){return t1 > t2 ? t1 : t2;}
+
+
+
 #endif

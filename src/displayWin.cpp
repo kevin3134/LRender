@@ -255,12 +255,12 @@ void window_draw_image(window_t *window, image_t *image) {
 
 }
 
-/*
+
 void window_draw_buffer(window_t *window, framebuffer_t *buffer) {
-    private_blit_buffer_bgr(buffer, window->surface);
+    blit_buffer_rgb(buffer, window->surface);
     present_surface(window);
 }
-*/
+
 
 /* input related functions */
 
