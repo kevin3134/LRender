@@ -13,9 +13,11 @@ include_directories(${PROJECT_SOURCE_DIR}/include)
 add_executable(LRender 
     src/main.cpp 
     src/image.cpp
+    src/rlMath.cpp
     include/display.h
     include/image.h
     include/macro.h
+    include/rlMath.h
 )
 
 if(WIN32)

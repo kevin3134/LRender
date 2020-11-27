@@ -1,5 +1,6 @@
 #include <iostream>
 #include "../include/display.h"
+#include "../include/rlMath.h"
 
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
     #include <windows.h>
@@ -25,8 +26,36 @@ static void key_callback(window_t *window, keycode_t key, int pressed) {
 }
 
 
-int main(){
+void test_rlMath(){
+    // vec2_t<int> testV1 = vec2_t<int>(1,1);
+    // vec2_t<int> testV2 = vec2_t<int>(2,2);
+    vec2f_t testV3 = vec2f_t(2,2);
+    vec3f_t testV = vec3f_t(testV3,1.0);
 
+    //std::cout << testV << std::endl;
+    mat3f_t mat(1,2,3,0,1,4,5,6,0);
+
+    //test mult float
+    // mat = mat*2;
+    //std::cout << mat << std::endl;
+
+    //test transpost
+    // mat = mat3f_transpose(mat);
+    // std::cout << mat << std::endl;
+
+    //test inverse
+    // mat = mat3f_inverse(mat);
+    // std::cout << mat << std::endl;
+
+    //test  inverse transpose
+    mat = mat3f_inverse_transpose(mat);
+    std::cout << mat << std::endl;
+
+}
+
+int main(){
+    //test_rlMath();
+///*
     float prev_time;
     int temp = -1;
     callbacks_t callbacks;
@@ -47,16 +76,14 @@ int main(){
         float delta_time = curr_time - prev_time;
 
         //std::cout<<"current time: "<< curr_time <<std::endl;
-        //if()
 
 
         //lrSleep(1000);
         prev_time = curr_time;
-
         input_poll_events();
     }
     window_destroy(window);
-
+//*/
 
     return 0;
 }
