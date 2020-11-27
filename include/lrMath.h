@@ -1,5 +1,5 @@
-#ifndef RLMATHS_H
-#define RLMATHS_H
+#ifndef LRMATHS_H
+#define LRMATHS_H
 
 #include <cmath>
 #include <iostream>

@@ -1,6 +1,6 @@
 #include <iostream>
 #include "../include/display.h"
-#include "../include/rlMath.h"
+#include "../include/lrMath.h"
 
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
     #include <windows.h>
@@ -26,7 +26,7 @@ static void key_callback(window_t *window, keycode_t key, int pressed) {
 }
 
 
-void test_rlMath(){
+void test_lrMath(){
     // vec2_t<int> testV1 = vec2_t<int>(1,1);
     // vec2_t<int> testV2 = vec2_t<int>(2,2);
     vec2f_t testV3 = vec2f_t(2,2);
@@ -54,7 +54,7 @@ void test_rlMath(){
 }
 
 int main(){
-    //test_rlMath();
+    //test_lrMath();
 ///*
     float prev_time;
     int temp = -1;

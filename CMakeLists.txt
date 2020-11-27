@@ -13,11 +13,13 @@ include_directories(${PROJECT_SOURCE_DIR}/include)
 add_executable(LRender 
     src/main.cpp 
     src/image.cpp
-    src/rlMath.cpp
+    src/lrMath.cpp
+    src/lrGraphic.cpp
     include/display.h
     include/image.h
     include/macro.h
-    include/rlMath.h
+    include/lrMath.h
+    include/lrGraphic.h 
 )
 
 if(WIN32)
@@ -30,8 +32,6 @@ elseif(APPLE)
 else()
     message(STATUS "compile in other")
 endif()
-
-
 
 
  

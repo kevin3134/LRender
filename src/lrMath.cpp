@@ -1,4 +1,4 @@
-#include "../include/rlMath.h"
+#include "../include/lrMath.h"
 
 vec3f_t mat3f_mul_vec3f(mat3f_t m, vec3f_t v) {
 
