@@ -1,6 +1,6 @@
   
-#ifndef MACRO_H
-#define MACRO_H
+#ifndef LRMACRO_H
+#define LRMACRO_H
 
 #define EPSILON 1e-5f
 #define PI 3.1415927f

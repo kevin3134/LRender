@@ -1,7 +1,7 @@
 #ifndef LRGRAPHIC_H
 #define LRGRAPHIC_H
 
-#include "image.h"
+#include "lrImage.h"
 #include "lrMath.h"
 
 

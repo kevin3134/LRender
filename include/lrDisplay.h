@@ -1,7 +1,7 @@
-#ifndef DISPLAY_H
-#define DISPLAY_H
+#ifndef LRDISPLAY_H
+#define LRDISPLAY_H
 
-#include "image.h"
+#include "lrImage.h"
 #include "lrGraphic.h"
 
 typedef struct window window_t;

@@ -1,7 +1,7 @@
 #include <assert.h>
 #include <stdlib.h>
 #include <string.h>
-#include "../include/image.h"
+#include "../include/lrImage.h"
 
 /* image creating/releasing */
 

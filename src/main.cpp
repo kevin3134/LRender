@@ -1,11 +1,11 @@
 #include <iostream>
-#include "../include/display.h"
+#include "../include/lrDisplay.h"
 #include "../include/lrMath.h"
 #include "../include/lrGraphic.h"
 
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
     #include <windows.h>
-    #include "../src/displayWin.cpp"
+    #include "../src/lrDisplayWin.cpp"
 #elif __APPLE__
     #include <unistd.h>
     #include "../src/displayMacTest.cpp"
@@ -25,7 +25,6 @@ static void key_callback(window_t *window, keycode_t key, int pressed) {
         window->should_close = 1;
     }
 }
-
 
 static const int WINDOW_WIDTH = 800;
 static const int WINDOW_HEIGHT = 600;
@@ -57,10 +56,10 @@ void test_lrMath(){
 
 }
 
+
 int main(){
 ///*
     float prev_time;
-    int temp = -1;
     callbacks_t callbacks;
     memset(&callbacks, 0, sizeof(callbacks_t));
     callbacks.key_callback = key_callback;
@@ -78,16 +77,9 @@ int main(){
         float curr_time = platform_get_time();
         float delta_time = curr_time - prev_time;
 
-        //std::cout<<"current time: "<< curr_time <<std::endl;
-
-
-        //lrSleep(1000);
         prev_time = curr_time;
 
-
         window_draw_buffer(window, framebuffer);
-
-
         input_poll_events();
     }
     window_destroy(window);

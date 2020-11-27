@@ -1,7 +1,7 @@
-###########################
+#################################
 # LRender project CMakeList
-# include 
-###########################
+# include basic c++ and system lib
+#################################
 cmake_minimum_required(VERSION 3.0)
 project(LRender)
 
@@ -12,12 +12,12 @@ include_directories(${PROJECT_SOURCE_DIR}/include)
 
 add_executable(LRender 
     src/main.cpp 
-    src/image.cpp
+    src/lrImage.cpp
     src/lrMath.cpp
     src/lrGraphic.cpp
-    include/display.h
-    include/image.h
-    include/macro.h
+    include/lrDisplay.h
+    include/lrImage.h
+    include/lrMacro.h
     include/lrMath.h
     include/lrGraphic.h 
 )

@@ -1,5 +1,5 @@
-#ifndef IMAGE_H
-#define IMAGE_H
+#ifndef LRIMAGE_H
+#define LRIMAGE_H
 
 typedef struct {int width, height, channels; unsigned char *buffer;} image_t;
 
