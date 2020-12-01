@@ -14,4 +14,12 @@ void image_save(image_t *image, const char *filename);
 // void image_flip_v(image_t *image);
 // image_t *image_resize(image_t *image, int width, int height);
 
+
+//tga 
+image_t *lrLoadTGAImage(const char *filename);
+
+
+
+
+
 #endif

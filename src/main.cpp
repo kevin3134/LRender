@@ -68,7 +68,7 @@ int main(){
 
     window_t* window = window_create("LRender", 800, 600);
     framebuffer_t *framebuffer = framebuffer_create(WINDOW_WIDTH, WINDOW_HEIGHT);
-
+    image_t * image = lrLoadTGAImage("ahd.tga");
 
     input_set_callbacks(window, callbacks);
     prev_time = platform_get_time();
@@ -79,10 +79,10 @@ int main(){
 
         prev_time = curr_time;
 
-        lrDrawLine2D(framebuffer, vec2i_t(0,0), vec2i_t(200,200), vec4f_t(1,1,1,1));
+        //lrDrawTriangle2D(framebuffer, vec2i_t(300,100), vec2i_t(200,200), vec2i_t(500,500), vec4f_t(1,1,1,1));
 
-
-        window_draw_buffer(window, framebuffer);
+        window_draw_image(window,image);
+        //window_draw_buffer(window, framebuffer);
         input_poll_events();
     }
     window_destroy(window);

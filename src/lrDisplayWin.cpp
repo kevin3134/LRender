@@ -353,7 +353,8 @@ static void present_surface(window_t *window) {
 
 
 void window_draw_image(window_t *window, image_t *image) {
-
+    blit_image_rgb(image, window->surface);
+    present_surface(window);
 }
 
 

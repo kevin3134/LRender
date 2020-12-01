@@ -1,5 +1,6 @@
 #include "../include/lrGraphic.h"
 #include "../include/lrMath.h"
+#include "../include/lrImage.h"
 
 #include <assert.h>
 
@@ -92,6 +93,13 @@ void lrDrawLine2D(framebuffer_t *framebuffer, vec2i_t v1, vec2i_t v2, vec4f_t co
 }
 
 
+void lrDrawTriangle2D(framebuffer_t *framebuffer, vec2i_t v1, vec2i_t v2, vec2i_t v3, vec4f_t color){
+    lrDrawLine2D(framebuffer, v1, v2, color);
+    lrDrawLine2D(framebuffer, v1, v3, color);
+    lrDrawLine2D(framebuffer, v2, v3, color);
+}
+
+
 void blit_buffer_rgb(framebuffer_t *src, image_t *dst){
     int width = lrMin(src->width, dst->width);
     int height = lrMin(src->height, dst->height);
@@ -108,6 +116,33 @@ void blit_buffer_rgb(framebuffer_t *src, image_t *dst){
             dst_pixel[0] = float_to_uchar(src_value.z);  /* blue */
             dst_pixel[1] = float_to_uchar(src_value.y);  /* green */
             dst_pixel[2] = float_to_uchar(src_value.x);  /* red */
+        }
+    }
+}
+
+
+void blit_image_rgb(image_t *src, image_t *dst) {
+    int width = lrMin(src->width, dst->width);
+    int height = lrMin(src->height, dst->height);
+    int r, c;
+
+    assert(width > 0 && height > 0);
+    assert(src->channels >= 1 && src->channels <= 4);
+    assert(dst->channels == 3 || dst->channels == 4);
+
+    for (r = 0; r < height; r++) {
+        for (c = 0; c < width; c++) {
+            int flipped_r = src->height - 1 - r;
+            unsigned char *src_pixel = private_get_pixel(src, flipped_r, c);
+            unsigned char *dst_pixel = private_get_pixel(dst, r, c);
+            if (src->channels == 3 || src->channels == 4) {
+                dst_pixel[0] = src_pixel[2];  /* red */
+                dst_pixel[1] = src_pixel[1];  /* green */
+                dst_pixel[2] = src_pixel[0];  /* blue */
+            } else {
+                unsigned char gray = src_pixel[0];
+                dst_pixel[0] = dst_pixel[1] = dst_pixel[2] = gray;
+            }
         }
     }
 }

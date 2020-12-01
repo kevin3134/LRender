@@ -15,11 +15,13 @@ add_executable(LRender
     src/lrImage.cpp
     src/lrMath.cpp
     src/lrGraphic.cpp
+    src/lrModel.cpp
     include/lrDisplay.h
     include/lrImage.h
     include/lrMacro.h
     include/lrMath.h
     include/lrGraphic.h 
+    include/lrModel.h 
 )
 
 if(WIN32)
