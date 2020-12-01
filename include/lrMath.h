@@ -221,6 +221,13 @@ typedef mat4f mat4f_t;
 template <class t> t lrMin(t t1, t t2){return t1 < t2 ? t1 : t2;}
 template <class t> t lrMax(t t1, t t2){return t1 > t2 ? t1 : t2;}
 
+template <class t> void lrSwap(t* t1, t* t2){ t temp = *t1; *t1 = *t2; *t2 = temp;}
+
+// int int_lerp(int a, int b, float t) {
+//     return (int)(a + (b - a) * t);
+// }
+
+template <class t> t lrLerp(t t1, t t2, float f){ return (t)(t1 + (t2-t1)*f); }
 
 
 #endif

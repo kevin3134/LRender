@@ -19,7 +19,7 @@ static unsigned char float_to_uchar(float value) {
 
 
 framebuffer_t *framebuffer_create(int width, int height) {
-    vec4f_t default_color = {0, .5, .5, 1};
+    vec4f_t default_color = {0, 0, 0, 1};
     float default_depth = 1;
     int num_elems = width * height;
     framebuffer_t *framebuffer;
@@ -47,6 +47,48 @@ void framebuffer_clear_color(framebuffer_t *framebuffer, vec4f_t color) {
     for (i = 0; i < num_elems; i++) {
         framebuffer->colorbuffer[i] = color;
     }
+}
+
+void lrDrawPoint2D(framebuffer_t *framebuffer, vec2i_t v, vec4f_t color){
+    int index = v[0] * framebuffer->width + v[1];
+    framebuffer->colorbuffer[index] = color;
+}
+
+
+void lrDrawLine2D(framebuffer_t *framebuffer, vec2i_t v1, vec2i_t v2, vec4f_t color){
+    int row0 = v1[0];
+    int row1 = v2[0];
+    int col0 = v1[1];
+    int col1 = v2[1];
+
+    int row_distance = abs(row0 - row1);
+    int col_distance = abs(col0 - col1);
+    if (row_distance == 0 && col_distance == 0) {
+        lrDrawPoint2D(framebuffer, v1, color);
+    } else if (row_distance > col_distance) {
+        int row;
+        if (row0 > row1) {
+            lrSwap(&row0, &row1);
+            lrSwap(&col0, &col1);
+        }
+        for (row = row0; row <= row1; row++) {
+            float t = (float)(row - row0) / (float)row_distance;
+            int col = lrLerp(col0, col1, t);
+            lrDrawPoint2D(framebuffer, vec2i_t(row, col), color);
+        }
+    } else {
+        int col;
+        if (col0 > col1) {
+            lrSwap(&col0, &col1);
+            lrSwap(&row0, &row1);
+        }
+        for (col = col0; col <= col1; col++) {
+            float t = (float)(col - col0) / (float)col_distance;
+            int row = lrLerp(row0, row1, t);
+            lrDrawPoint2D(framebuffer, vec2i_t(row, col), color);
+        }
+    }
+
 }
 
 

@@ -79,6 +79,9 @@ int main(){
 
         prev_time = curr_time;
 
+        lrDrawLine2D(framebuffer, vec2i_t(0,0), vec2i_t(200,200), vec4f_t(1,1,1,1));
+
+
         window_draw_buffer(window, framebuffer);
         input_poll_events();
     }
