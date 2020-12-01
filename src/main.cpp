@@ -68,7 +68,7 @@ int main(){
 
     window_t* window = window_create("LRender", 800, 600);
     framebuffer_t *framebuffer = framebuffer_create(WINDOW_WIDTH, WINDOW_HEIGHT);
-    image_t * image = lrLoadTGAImage("ahd.tga");
+    image_t * image = lrLoadTGAImage("../resource/phoenix/wings_diffuse.tga");
 
     input_set_callbacks(window, callbacks);
     prev_time = platform_get_time();
@@ -86,6 +86,8 @@ int main(){
         input_poll_events();
     }
     window_destroy(window);
+    image_release(image);
+    framebuffer_release(framebuffer);
 //*/
 
     return 0;

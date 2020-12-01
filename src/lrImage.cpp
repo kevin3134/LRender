@@ -9,7 +9,7 @@
 
 
 /* image creating/releasing */
-
+//TODO: 1, modified style 2, some functions into constructor
 image_t *image_create(int width, int height, int channels) {
     int buffer_size = width * height * channels;
     image_t *image;
@@ -129,8 +129,8 @@ static void load_tga_rle(FILE *file, image_t *image) {
             }
         }
     }
-    std::cout << elem_count << std::endl;
-    std::cout << buffer_size << std::endl;
+    // std::cout << elem_count << std::endl;
+    // std::cout << buffer_size << std::endl;
     assert(elem_count == buffer_size);
 }
 
@@ -153,15 +153,15 @@ image_t *lrLoadTGAImage(const char *filename){
     assert(depth == 8 || depth == 24 || depth == 32);
     channels = depth / 8;
 
-    std::cout << "width: " << width << std::endl;
-    std::cout << "height: " << height << std::endl;
-    std::cout << "channels: " << channels << std::endl;
+    // std::cout << "width: " << width << std::endl;
+    // std::cout << "height: " << height << std::endl;
+    // std::cout << "channels: " << channels << std::endl;
 
 
 
     image = image_create(width, height, channels);
 
-    std::cout << "image buffer size: " << get_buffer_size(image) << std::endl;
+    // std::cout << "image buffer size: " << get_buffer_size(image) << std::endl;
 
 
 
