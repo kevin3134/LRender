@@ -353,13 +353,14 @@ static void present_surface(window_t *window) {
 
 
 void window_draw_image(window_t *window, image_t *image) {
-    blit_image_rgb(image, window->surface);
+    //lrBlitImage(image, window->surface);
+    lrBlitImageBGR(image, window->surface);
     present_surface(window);
 }
 
 
 void window_draw_buffer(window_t *window, framebuffer_t *buffer) {
-    blit_buffer_rgb(buffer, window->surface);
+    lrBlitBuffer(buffer, window->surface);
     present_surface(window);
 }
 

@@ -258,7 +258,7 @@ window_t *window_create(const char *title, int width, int height) {
     window = (window_t*)malloc(sizeof(window_t));
     memset(window, 0, sizeof(window_t));
     window->handle = create_window(window, title, width, height);
-    window->surface = image_create(width, height, MAC_CHANNEL);
+    window->surface = lrCreateImage(width, height, MAC_CHANNEL);
 
     [window->handle makeKeyAndOrderFront:nil];
     return window;
@@ -273,7 +273,7 @@ void window_destroy(window_t *window) {
     [g_autoreleasepool drain];
     g_autoreleasepool = [[NSAutoreleasePool alloc] init];
 
-    image_release(window->surface);
+    lrRelaseImage(window->surface);
     free(window);
 }
 

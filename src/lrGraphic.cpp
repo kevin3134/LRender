@@ -9,17 +9,12 @@ static vec4f_t get_buffer_value(framebuffer_t *buffer, int row, int col) {
     return buffer->colorbuffer[index];
 }
 
-unsigned char *private_get_pixel(image_t *image, int row, int col) {
-    int index = row * image->width * image->channels + col * image->channels;
-    return &(image->buffer[index]);
-}
-
 static unsigned char float_to_uchar(float value) {
     return (unsigned char)(value * 255);
 }
 
 
-framebuffer_t *framebuffer_create(int width, int height) {
+framebuffer_t *lrCreateFramebuffer(int width, int height) {
     vec4f_t default_color = {0, 0, 0, 1};
     float default_depth = 1;
     int num_elems = width * height;
@@ -32,17 +27,17 @@ framebuffer_t *framebuffer_create(int width, int height) {
     framebuffer->height = height;
     framebuffer->colorbuffer = (vec4f_t*)malloc(sizeof(vec4f_t) * num_elems);
 
-    framebuffer_clear_color(framebuffer, default_color);
+    lrClearColorFramebuffer(framebuffer, default_color);
 
     return framebuffer;
 }
 
-void framebuffer_release(framebuffer_t *framebuffer) {
+void lrReleaseFramebuffer(framebuffer_t *framebuffer) {
     free(framebuffer->colorbuffer);
     free(framebuffer);
 }
 
-void framebuffer_clear_color(framebuffer_t *framebuffer, vec4f_t color) {
+void lrClearColorFramebuffer(framebuffer_t *framebuffer, vec4f_t color) {
     int num_elems = framebuffer->width * framebuffer->height;
     int i;
     for (i = 0; i < num_elems; i++) {
@@ -89,7 +84,6 @@ void lrDrawLine2D(framebuffer_t *framebuffer, vec2i_t v1, vec2i_t v2, vec4f_t co
             lrDrawPoint2D(framebuffer, vec2i_t(row, col), color);
         }
     }
-
 }
 
 
@@ -100,7 +94,7 @@ void lrDrawTriangle2D(framebuffer_t *framebuffer, vec2i_t v1, vec2i_t v2, vec2i_
 }
 
 
-void blit_buffer_rgb(framebuffer_t *src, image_t *dst){
+void lrBlitBuffer(framebuffer_t *src, image_t *dst){
     int width = lrMin(src->width, dst->width);
     int height = lrMin(src->height, dst->height);
     int r, c;
@@ -112,7 +106,7 @@ void blit_buffer_rgb(framebuffer_t *src, image_t *dst){
         for (c = 0; c < width; c++) {
             int flipped_r = src->height - 1 - r;
             vec4f_t src_value = get_buffer_value(src, flipped_r, c);
-            unsigned char *dst_pixel = private_get_pixel(dst, r, c);
+            unsigned char *dst_pixel = lrGetPixel(dst, r, c);
             dst_pixel[0] = float_to_uchar(src_value.z);  /* blue */
             dst_pixel[1] = float_to_uchar(src_value.y);  /* green */
             dst_pixel[2] = float_to_uchar(src_value.x);  /* red */
@@ -121,7 +115,7 @@ void blit_buffer_rgb(framebuffer_t *src, image_t *dst){
 }
 
 
-void blit_image_rgb(image_t *src, image_t *dst) {
+void lrBlitImage(image_t *src, image_t *dst) {
     int width = lrMin(src->width, dst->width);
     int height = lrMin(src->height, dst->height);
     int r, c;
@@ -133,12 +127,38 @@ void blit_image_rgb(image_t *src, image_t *dst) {
     for (r = 0; r < height; r++) {
         for (c = 0; c < width; c++) {
             int flipped_r = src->height - 1 - r;
-            unsigned char *src_pixel = private_get_pixel(src, flipped_r, c);
-            unsigned char *dst_pixel = private_get_pixel(dst, r, c);
+            unsigned char *src_pixel = lrGetPixel(src, flipped_r, c);
+            unsigned char *dst_pixel = lrGetPixel(dst, r, c);
             if (src->channels == 3 || src->channels == 4) {
                 dst_pixel[0] = src_pixel[2];  /* red */
                 dst_pixel[1] = src_pixel[1];  /* green */
                 dst_pixel[2] = src_pixel[0];  /* blue */
+            } else {
+                unsigned char gray = src_pixel[0];
+                dst_pixel[0] = dst_pixel[1] = dst_pixel[2] = gray;
+            }
+        }
+    }
+}
+
+void lrBlitImageBGR(image_t *src, image_t *dst) {
+    int width = lrMin(src->width, dst->width);
+    int height = lrMin(src->height, dst->height);
+    int r, c;
+
+    assert(width > 0 && height > 0);
+    assert(src->channels >= 1 && src->channels <= 4);
+    assert(dst->channels == 3 || dst->channels == 4);
+
+    for (r = 0; r < height; r++) {
+        for (c = 0; c < width; c++) {
+            int flipped_r = src->height - 1 - r;
+            unsigned char *src_pixel = lrGetPixel(src, flipped_r, c);
+            unsigned char *dst_pixel = lrGetPixel(dst, r, c);
+            if (src->channels == 3 || src->channels == 4) {
+                dst_pixel[0] = src_pixel[0];  /* blue */
+                dst_pixel[1] = src_pixel[1];  /* green */
+                dst_pixel[2] = src_pixel[2];  /* red */
             } else {
                 unsigned char gray = src_pixel[0];
                 dst_pixel[0] = dst_pixel[1] = dst_pixel[2] = gray;

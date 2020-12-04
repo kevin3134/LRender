@@ -2,6 +2,8 @@
 #include "../include/lrDisplay.h"
 #include "../include/lrMath.h"
 #include "../include/lrGraphic.h"
+#include "../include/lrMesh.h"
+
 
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
     #include <windows.h>
@@ -57,6 +59,7 @@ void test_lrMath(){
 }
 
 
+
 int main(){
 ///*
     float prev_time;
@@ -67,8 +70,10 @@ int main(){
     std::cout << "LRender Main" <<std::endl;
 
     window_t* window = window_create("LRender", 800, 600);
-    framebuffer_t *framebuffer = framebuffer_create(WINDOW_WIDTH, WINDOW_HEIGHT);
-    image_t * image = lrLoadTGAImage("../resource/phoenix/wings_diffuse.tga");
+    framebuffer_t *framebuffer = lrCreateFramebuffer(WINDOW_WIDTH, WINDOW_HEIGHT);
+    image_t * image = lrLoadTGAImage("../resource/witch/witch_diffuse.tga");
+
+    lrMesh mesh("../resource/witch/witch.obj");
 
     input_set_callbacks(window, callbacks);
     prev_time = platform_get_time();
@@ -86,8 +91,8 @@ int main(){
         input_poll_events();
     }
     window_destroy(window);
-    image_release(image);
-    framebuffer_release(framebuffer);
+    lrRelaseImage(image);
+    lrReleaseFramebuffer(framebuffer);
 //*/
 
     return 0;

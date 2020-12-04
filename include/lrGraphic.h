@@ -12,14 +12,16 @@ typedef struct {
 } framebuffer_t;
 
 
-framebuffer_t *framebuffer_create(int width, int height);
-void framebuffer_release(framebuffer_t *framebuffer);
-void framebuffer_clear_color(framebuffer_t *framebuffer, vec4f_t color);
+framebuffer_t *lrCreateFramebuffer(int width, int height);
+void lrReleaseFramebuffer(framebuffer_t *framebuffer);
+void lrClearColorFramebuffer(framebuffer_t *framebuffer, vec4f_t color);
 // void framebuffer_clear_depth(framebuffer_t *framebuffer, float depth);
 
+//copy image data from source to target
+void lrBlitBuffer(framebuffer_t *source, image_t *target);
+void lrBlitImage(image_t *source, image_t *target);
 
-void blit_buffer_rgb(framebuffer_t *source, image_t *target);
-void blit_image_rgb(image_t *source, image_t *target);
+void lrBlitImageBGR(image_t *source, image_t *target);
 
 
 void lrDrawPoint2D(framebuffer_t *framebuffer, vec2i_t v, vec4f_t color);

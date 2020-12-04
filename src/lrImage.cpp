@@ -10,7 +10,7 @@
 
 /* image creating/releasing */
 //TODO: 1, modified style 2, some functions into constructor
-image_t *image_create(int width, int height, int channels) {
+image_t *lrCreateImage(int width, int height, int channels) {
     int buffer_size = width * height * channels;
     image_t *image;
 
@@ -26,33 +26,35 @@ image_t *image_create(int width, int height, int channels) {
     return image;
 }
 
-void image_release(image_t *image) {
+void lrRelaseImage(image_t *image) {
     free(image->buffer);
     free(image);
 }
 
-image_t *image_load(const char *filename) {
+/*
+image_t *lrLoadImage(const char *filename) {
     return NULL;
 }
+*/
 
-void image_save(image_t *image, const char *filename) {
+void lrSaveImage(image_t *image, const char *filename) {
 }
 
 
 /* image processing */
-unsigned char *get_pixel(image_t *image, int row, int col) {
+unsigned char *lrGetPixel(image_t *image, int row, int col) {
     int index = row * image->width * image->channels + col * image->channels;
     return &(image->buffer[index]);
 }
 
-void image_flip_h(image_t *image) {
+void lrFlipImageHorzon(image_t *image) {
     int half_width = image->width / 2;
     int r, c, k;
     for (r = 0; r < image->height; r++) {
         for (c = 0; c < half_width; c++) {
             int flipped_c = image->width - 1 - c;
-            unsigned char *pixel1 = get_pixel(image, r, c);
-            unsigned char *pixel2 = get_pixel(image, r, flipped_c);
+            unsigned char *pixel1 = lrGetPixel(image, r, c);
+            unsigned char *pixel2 = lrGetPixel(image, r, flipped_c);
             for (k = 0; k < image->channels; k++) {
                 lrSwap(&pixel1[k], &pixel2[k]);
             }
@@ -60,14 +62,14 @@ void image_flip_h(image_t *image) {
     }
 }
 
-void image_flip_v(image_t *image) {
+void lrFlipImageVertical(image_t *image) {
     int half_height = image->height / 2;
     int r, c, k;
     for (r = 0; r < half_height; r++) {
         for (c = 0; c < image->width; c++) {
             int flipped_r = image->height - 1 - r;
-            unsigned char *pixel1 = get_pixel(image, r, c);
-            unsigned char *pixel2 = get_pixel(image, flipped_r, c);
+            unsigned char *pixel1 = lrGetPixel(image, r, c);
+            unsigned char *pixel2 = lrGetPixel(image, flipped_r, c);
             for (k = 0; k < image->channels; k++) {
                 lrSwap(&pixel1[k], &pixel2[k]);
             }
@@ -159,7 +161,7 @@ image_t *lrLoadTGAImage(const char *filename){
 
 
 
-    image = image_create(width, height, channels);
+    image = lrCreateImage(width, height, channels);
 
     // std::cout << "image buffer size: " << get_buffer_size(image) << std::endl;
 
@@ -180,10 +182,10 @@ image_t *lrLoadTGAImage(const char *filename){
 
     imgdesc = header[17];
     if (imgdesc & 0x20) {
-        image_flip_v(image);
+        lrFlipImageVertical(image);
     }
     if (imgdesc & 0x10) {
-        image_flip_h(image);
+        lrFlipImageHorzon(image);
     }
     return image;
 }

@@ -15,15 +15,15 @@ add_executable(LRender
     src/lrImage.cpp
     src/lrMath.cpp
     src/lrGraphic.cpp
-    src/lrModel.cpp
+    src/lrMesh.cpp
     include/lrDisplay.h
     include/lrImage.h
     include/lrMacro.h
     include/lrMath.h
     include/lrGraphic.h 
-    include/lrModel.h 
+    include/lrMesh.h 
 )
-
+ 
 if(WIN32)
     set(SOURCES ${SOURCES} src/displayWin.cpp)
     message(STATUS "compile in WIN")
