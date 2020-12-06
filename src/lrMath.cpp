@@ -74,3 +74,16 @@ mat3f_t mat3f_inverse_transpose(mat3f_t m) {
     }
     return inverse_transpose;
 }
+
+vec3f_t lrBarycentric(vec3f_t A, vec3f_t B, vec3f_t C, vec3f_t P) {
+    vec3f_t s[2];
+    for (int i=2; i--; ) {
+        s[i][0] = C[i]-A[i];
+        s[i][1] = B[i]-A[i];
+        s[i][2] = A[i]-P[i];
+    }
+    vec3f_t u = s[0]^s[1];
+    if (std::abs(u[2])>1e-2) // dont forget that u[2] is integer. If it is zero then triangle ABC is degenerate
+        return vec3f_t(1.f-(u.x+u.y)/u.z, u.y/u.z, u.x/u.z);
+    return vec3f_t(-1,1,1); // in this case generate negative coordinates, it will be thrown away by the rasterizator
+}

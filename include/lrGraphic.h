@@ -26,7 +26,11 @@ void lrBlitImageBGR(image_t *source, image_t *target);
 
 void lrDrawPoint2D(framebuffer_t *framebuffer, vec2i_t v, vec4f_t color);
 void lrDrawLine2D(framebuffer_t *framebuffer, vec2i_t v1, vec2i_t v2, vec4f_t color);
+void lrDrawTriangleLine2D(framebuffer_t *framebuffer, vec2i_t v1, vec2i_t v2, vec2i_t v3, vec4f_t color);
+
 void lrDrawTriangle2D(framebuffer_t *framebuffer, vec2i_t v1, vec2i_t v2, vec2i_t v3, vec4f_t color);
+
+
 
 
 
