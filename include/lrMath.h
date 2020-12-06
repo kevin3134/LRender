@@ -15,6 +15,7 @@ template <class t> struct vec2_t {
     vec2_t<t> operator +(const vec2_t<t> V) const { return vec2_t<t>(x+V.x, y+V.y); }
     vec2_t<t> operator -(const vec2_t<t> V) const { return vec2_t<t>(x-V.x, y-V.y); }
     vec2_t<t> operator *(float f)          const { return vec2_t<t>(x*f, y*f); }
+
     t& operator[](const int i) {
         if(i==0){return x;}
         else if(i==1){return y;}
@@ -46,6 +47,8 @@ template <class t> struct vec3_t {
     vec3_t<t> operator +(const vec3_t<t> V) const { return vec3_t<t>(x+V.x, y+V.y, z+V.z); }
     vec3_t<t> operator -(const vec3_t<t> V) const { return vec3_t<t>(x-V.x, y-V.y, z-V.z); }
     vec3_t<t> operator *(float f)          const { return vec3_t<t>(x*f, y*f, z*f); }
+    vec3_t<t> operator ^(const vec3_t<t> &v) const { return vec3_t<t>(y*v.z-z*v.y, z*v.x-x*v.z, x*v.y-y*v.x); }
+
     t& operator[](const int i) {
         if(i==0){return x;}
         else if(i==1){return y;}
@@ -229,5 +232,8 @@ template <class t> void lrSwap(t* t1, t* t2){ t temp = *t1; *t1 = *t2; *t2 = tem
 
 template <class t> t lrLerp(t t1, t t2, float f){ return (t)(t1 + (t2-t1)*f); }
 
+
+
+vec3f_t lrBarycentric(vec3f_t A, vec3f_t B, vec3f_t C, vec3f_t P);
 
 #endif

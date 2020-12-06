@@ -53,5 +53,28 @@ lrMesh::~lrMesh(){}
 
 
 
+
+int lrMesh::countEBO(){return EBO.size();}
+
+
+
+vec3f_t lrMesh::getVBOPostion(int n){
+    return VBOPosition[n];
+}
+
+std::vector<vec3i_t> lrMesh::getEBO(int n){
+    return EBO[n];
+}
+
+
+vec3i_t lrMesh::getEBOVetex(int n){
+    std::vector<vec3i_t> currentEBO = getEBO(n);
+    vec3i_t EBOVetex;
+    for(int i=0;i<3;i++){
+        EBOVetex[i] = currentEBO[i].x;
+    }
+    return EBOVetex;
+}
+
 lrMesh lrLoadMesh(const char *filename){return lrMesh(filename);}
 

@@ -85,9 +85,25 @@ int main(){
         prev_time = curr_time;
 
         //lrDrawTriangle2D(framebuffer, vec2i_t(300,100), vec2i_t(200,200), vec2i_t(500,500), vec4f_t(1,1,1,1));
+        
+        for(int i=0;i<mesh.countEBO();i++){
+            vec3i_t face = mesh.getEBOVetex(i);
+            vec2i_t screenCoords[3];
 
-        window_draw_image(window,image);
-        //window_draw_buffer(window, framebuffer);
+            for(int j=0;j<3;j++){
+                vec3f_t worldCoords = mesh.getVBOPostion(face[j]);
+                int x = worldCoords[0];
+                int y = worldCoords[1];
+                int z = worldCoords[2];
+
+
+                screenCoords[j]=vec2i_t(z*9, x*9+300);
+            }
+            lrDrawTriangle2D(framebuffer, screenCoords[0], screenCoords[1], screenCoords[2], vec4f_t(rand()%255,rand()%255,rand()%255,rand()%255));
+        }
+
+        //window_draw_image(window,image);
+        window_draw_buffer(window, framebuffer);
         input_poll_events();
     }
     window_destroy(window);
