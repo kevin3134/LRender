@@ -8,7 +8,7 @@
 
 static vec4f_t get_buffer_value(framebuffer_t *buffer, int row, int col) {
     int index = row * buffer->width + col;
-    return buffer->colorbuffer[index];
+    return buffer->colorBuffer[index];
 }
 
 static unsigned char float_to_uchar(float value) {
@@ -17,8 +17,8 @@ static unsigned char float_to_uchar(float value) {
 
 
 framebuffer_t *lrCreateFramebuffer(int width, int height) {
-    vec4f_t default_color = {0, 0, 0, 1};
-    float default_depth = 1;
+    vec4f_t defaultColor = {0, 0, 0, 1};
+    float defaultDepth = 1;
     int num_elems = width * height;
     framebuffer_t *framebuffer;
 
@@ -27,15 +27,17 @@ framebuffer_t *lrCreateFramebuffer(int width, int height) {
     framebuffer = (framebuffer_t*)malloc(sizeof(framebuffer_t));
     framebuffer->width = width;
     framebuffer->height = height;
-    framebuffer->colorbuffer = (vec4f_t*)malloc(sizeof(vec4f_t) * num_elems);
+    framebuffer->colorBuffer = (vec4f_t*)malloc(sizeof(vec4f_t) * num_elems);
+    framebuffer->depthBuffer = (float*)malloc(sizeof(float) * num_elems);
 
-    lrClearColorFramebuffer(framebuffer, default_color);
-
+    lrClearColorFramebuffer(framebuffer, defaultColor);
+    lrClearDepthFramebuffer(framebuffer, defaultDepth);
     return framebuffer;
 }
 
 void lrReleaseFramebuffer(framebuffer_t *framebuffer) {
-    free(framebuffer->colorbuffer);
+    free(framebuffer->colorBuffer);
+    free(framebuffer->depthBuffer);
     free(framebuffer);
 }
 
@@ -43,13 +45,21 @@ void lrClearColorFramebuffer(framebuffer_t *framebuffer, vec4f_t color) {
     int num_elems = framebuffer->width * framebuffer->height;
     int i;
     for (i = 0; i < num_elems; i++) {
-        framebuffer->colorbuffer[i] = color;
+        framebuffer->colorBuffer[i] = color;
+    }
+}
+
+void lrClearDepthFramebuffer(framebuffer_t *framebuffer, float depth) {
+    int num_elems = framebuffer->width * framebuffer->height;
+    int i;
+    for (i = 0; i < num_elems; i++) {
+        framebuffer->depthBuffer[i] = depth;
     }
 }
 
 void lrDrawPoint2D(framebuffer_t *framebuffer, vec2i_t v, vec4f_t color){
     int index = v[0] * framebuffer->width + v[1];
-    framebuffer->colorbuffer[index] = color;
+    framebuffer->colorBuffer[index] = color;
 }
 
 
@@ -115,7 +125,42 @@ void lrDrawTriangle2D(framebuffer_t *framebuffer, vec2i_t v1, vec2i_t v2, vec2i_
         for (P.y=bboxmin.y; P.y<=bboxmax.y; P.y++) { 
             vec3f_t bc_screen  = lrBarycentric(vec3f_t(v1[0],v1[1],0),vec3f_t(v2[0],v2[1],0),vec3f_t(v3[0],v3[1],0),vec3f_t(P[0],P[1],0)); 
             if (bc_screen.x<0 || bc_screen.y<0 || bc_screen.z<0) continue; 
+
+
             lrDrawPoint2D(framebuffer, P, color); 
+        } 
+    } 
+}
+
+void lrDrawTriangle3D(framebuffer_t *framebuffer, vec3i_t v1, vec3i_t v2, vec3i_t v3, vec4f_t color){
+    //lrBarycentric(vec3f_t A, vec3f_t B, vec3f_t C, vec3f_t P)
+
+    int width = framebuffer->width;
+    int height = framebuffer->height;
+
+    vec2i_t bboxmin(framebuffer->width-1,  framebuffer->height-1); 
+    vec2i_t bboxmax(0, 0); 
+    vec2i_t clamp(framebuffer->width-1,  framebuffer->height-1); 
+
+
+    bboxmin[0] = lrMax(0, lrMin(lrMin(v1[0],v2[0]),v3[0]));
+    bboxmin[1] = lrMax(0, lrMin(lrMin(v1[1],v2[1]),v3[1]));
+
+    bboxmax[0] = lrMin(framebuffer->width-1, lrMax(lrMax(v1[0],v2[0]),v3[0]));
+    bboxmax[1] = lrMin(framebuffer->width-1, lrMax(lrMax(v1[1],v2[1]),v3[1]));
+
+    vec3i_t P; 
+
+    for (P.x=bboxmin.x; P.x<=bboxmax.x; P.x++) { 
+        for (P.y=bboxmin.y; P.y<=bboxmax.y; P.y++) { 
+            vec3f_t bc_screen  = lrBarycentric(vec3f_t(v1[0],v1[1],v1[2]),vec3f_t(v2[0],v2[1],v2[2]),vec3f_t(v3[0],v3[1],v3[2]),vec3f_t(P[0],P[1],P[2])); 
+            if (bc_screen.x<0 || bc_screen.y<0 || bc_screen.z<0) continue; 
+
+            P.z = v1[2]*bc_screen[0] + v2[2]*bc_screen[1] + v3[2]*bc_screen[2];
+            if(framebuffer->depthBuffer[int(P.x+P.y*width)] < P.z){
+                framebuffer->depthBuffer[int(P.x+P.y*width)] = P.z;
+                lrDrawPoint2D(framebuffer, vec2i_t(P.x,P.y), color); 
+            }
         } 
     } 
 }

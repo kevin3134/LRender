@@ -78,6 +78,8 @@ int main(){
     input_set_callbacks(window, callbacks);
     prev_time = platform_get_time();
 
+    vec3f_t lightDir(-1,0,0);
+
     while(!window_should_close(window)){
         float curr_time = platform_get_time();
         float delta_time = curr_time - prev_time;
@@ -88,18 +90,28 @@ int main(){
         
         for(int i=0;i<mesh.countEBO();i++){
             vec3i_t face = mesh.getEBOVetex(i);
-            vec2i_t screenCoords[3];
+            //vec2i_t screenCoords[3];
+            vec3f_t worldCoords[3];
+            vec3i_t screenCoords[3];
 
             for(int j=0;j<3;j++){
-                vec3f_t worldCoords = mesh.getVBOPostion(face[j]);
-                int x = worldCoords[0];
-                int y = worldCoords[1];
-                int z = worldCoords[2];
+                worldCoords[j] = mesh.getVBOPostion(face[j]);
+                int x = worldCoords[j][0];
+                int y = worldCoords[j][1];
+                int z = worldCoords[j][2];
 
+                //screenCoords[j]=vec2i_t(x*10, y*10);
 
-                screenCoords[j]=vec2i_t(z*9, x*9+300);
+                //screenCoords[j]=vec3i_t(z*3, y*3, x*3);
+                screenCoords[j]=vec3i_t(z*6, y*6, x*6);
             }
-            lrDrawTriangle2D(framebuffer, screenCoords[0], screenCoords[1], screenCoords[2], vec4f_t(rand()%255,rand()%255,rand()%255,rand()%255));
+            vec3f_t n = (worldCoords[2]-worldCoords[0])^(worldCoords[1]-worldCoords[0]); 
+            float intensity = n*lightDir;
+            //intensity = 0.5;
+            if(intensity>0){
+                //lrDrawTriangle2D(framebuffer, screenCoords[0], screenCoords[1], screenCoords[2], vec4f_t(intensity,intensity,intensity,intensity));
+                lrDrawTriangle3D(framebuffer, screenCoords[0], screenCoords[1], screenCoords[2], vec4f_t(intensity,intensity,intensity,intensity));
+            }
         }
 
         //window_draw_image(window,image);

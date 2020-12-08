@@ -48,6 +48,7 @@ template <class t> struct vec3_t {
     vec3_t<t> operator -(const vec3_t<t> V) const { return vec3_t<t>(x-V.x, y-V.y, z-V.z); }
     vec3_t<t> operator *(float f)          const { return vec3_t<t>(x*f, y*f, z*f); }
     vec3_t<t> operator ^(const vec3_t<t> &v) const { return vec3_t<t>(y*v.z-z*v.y, z*v.x-x*v.z, x*v.y-y*v.x); }
+    t operator *(vec3_t<t> V)          const { return x*V.x+y*V.y+z*V.z; }
 
     t& operator[](const int i) {
         if(i==0){return x;}
