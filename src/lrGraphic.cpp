@@ -58,7 +58,8 @@ void lrClearDepthFramebuffer(framebuffer_t *framebuffer, float depth) {
 }
 
 void lrDrawPoint2D(framebuffer_t *framebuffer, vec2i_t v, vec4f_t color){
-    int index = v[0] * framebuffer->width + v[1];
+    //int index = v[0] * framebuffer->width + v[1];
+    int index = v[1] * framebuffer->width + v[0];
     framebuffer->colorBuffer[index] = color;
 }
 

@@ -56,6 +56,12 @@ template <class t> struct vec3_t {
         else if(i==2){return z;}
         else{throw "incorrect index input in vec3!";}
     }
+
+    float norm () const { return std::sqrt(x*x+y*y+z*z); }
+	vec3_t<t> & normalize(t l=1) { *this = (*this)*(l/norm()); return *this; }
+
+
+
     template <class> friend std::ostream& operator<<(std::ostream& out, vec3_t<t>& V);
 
 };
