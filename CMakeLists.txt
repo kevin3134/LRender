@@ -16,12 +16,14 @@ add_executable(LRender
     src/lrMath.cpp
     src/lrGraphic.cpp
     src/lrMesh.cpp
+    src/lrTexture.cpp
     include/lrDisplay.h
     include/lrImage.h
     include/lrMacro.h
     include/lrMath.h
     include/lrGraphic.h 
     include/lrMesh.h 
+    include/lrTexture.h 
 )
  
 if(WIN32)

@@ -26,7 +26,7 @@ image_t *lrCreateImage(int width, int height, int channels) {
     return image;
 }
 
-void lrRelaseImage(image_t *image) {
+void lrReleaseImage(image_t *image) {
     free(image->buffer);
     free(image);
 }

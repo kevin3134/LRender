@@ -5,7 +5,7 @@ typedef struct {int width, height, channels; unsigned char *buffer;} image_t;
 
 /* image creating/releasing */
 image_t *lrCreateImage(int width, int height, int channels);
-void lrRelaseImage(image_t *image);
+void lrReleaseImage(image_t *image);
 //image_t *lrLoadImage(const char *filename);
 void lrSaveImage(image_t *image, const char *filename);
 

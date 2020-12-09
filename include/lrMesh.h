@@ -12,12 +12,15 @@ class lrMesh{
 
         int countEBO();
 
-        vec3f_t getVBOPostion(int n);
+        vec3f_t getVBOPostion(int n);        
+        vec3f_t getScaledVBOPostion(int n);
+
         std::vector<vec3i_t> getEBO(int n);
         vec3i_t getEBOVetex(int n);
+        vec3i_t getEBOTexture(int n);
 
-        //float getScale(){return maxScale;}
-        vec3f_t getScaledVBOPostion(int n);
+
+        vec2f_t getTextureUV(int n);
 
     private:
         //list of vertices (x,y,z)
