@@ -87,7 +87,7 @@ int main(){
 
         prev_time = curr_time;
 
-        //lrDrawTriangle2D(framebuffer, vec2i_t(300,100), vec2i_t(200,200), vec2i_t(500,500), vec4f_t(1,1,1,1));
+
         
         for(int i=0;i<mesh.countEBO();i++){
             vec3i_t face = mesh.getEBOVetex(i);
@@ -96,16 +96,17 @@ int main(){
             //vec3i_t screenCoords[3];
 
             for(int j=0;j<3;j++){
-                worldCoords[j] = mesh.getVBOPostion(face[j]);
-                // int x = worldCoords[j][0] *100;
-                // int y = worldCoords[j][1] *100;
-                // int z = worldCoords[j][2] *100;
+                //worldCoords[j] = mesh.getVBOPostion(face[j]);
+                worldCoords[j] = mesh.getScaledVBOPostion(face[j]);
+                int x = worldCoords[j][0] *500;
+                int y = worldCoords[j][1] *500;;
+                int z = worldCoords[j][2] *500;;
 
-                //screenCoords[j]=vec2i_t(x*10, y*10);
-
+                //screenCoords[j]=vec2i_t(y, z);
+                screenCoords[j]=vec2i_t(x, y);
                 //screenCoords[j]=vec3i_t(x,y,z);
 
-                screenCoords[j] = vec2i_t((worldCoords[j].x+1.)*300/2., (worldCoords[j].y+1.)*300/2.);
+                //screenCoords[j] = vec2i_t((worldCoords[j].x+scale/2)*300/scale, (worldCoords[j].y+1.)*300/2.);
                 //screenCoords[j]=vec3i_t(z*6, y*6, x*6);
             }
             vec3f_t n = (worldCoords[2]-worldCoords[0])^(worldCoords[1]-worldCoords[0]); 
@@ -121,7 +122,10 @@ int main(){
             }
         }
 
-        lrDrawPoint2D(framebuffer, vec2i_t(1,300),vec4f_t(1,1,1,1));
+        //lrDrawPoint2D(framebuffer, vec2i_t(1,300),vec4f_t(1,1,1,1));
+
+        //lrDrawTriangleLine2D(framebuffer, vec2i_t(100,0), vec2i_t(100,300), vec2i_t(500,300), vec4f_t(1,1,1,1));
+
 
         //window_draw_image(window,image);
         window_draw_buffer(window, framebuffer);
