@@ -4,6 +4,7 @@
 #include "../include/lrGraphic.h"
 #include "../include/lrMesh.h"
 #include "../include/lrTexture.h"
+#include "../include/lrCamera.h"
 
 
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
@@ -39,30 +40,18 @@ static void key_callback(window_t *window, keycode_t key, int pressed) {
 
 
 void test_lrMath(){
-    // vec2_t<int> testV1 = vec2_t<int>(1,1);
-    // vec2_t<int> testV2 = vec2_t<int>(2,2);
-    vec2f_t testV3 = vec2f_t(2,2);
-    vec3f_t testV = vec3f_t(testV3,1.0);
+    vec4f_t vec1(1,1,1,1);
+    vec4f_t vec2(1,1,1,1);
 
-    //std::cout << testV << std::endl;
-    mat3f_t mat(1,2,3,0,1,4,5,6,0);
 
-    //test mult float
-    // mat = mat*2;
-    //std::cout << mat << std::endl;
+    mat4f_t mat1(1,2,3,4,0,1,4,6,5,6,0,7,0,0,0,1);
+    mat4f_t mat2(1,2,3,4,0,1,4,6,5,6,0,7,0,0,0,1);
 
-    //test transpost
-    // mat = mat3f_transpose(mat);
-    // std::cout << mat << std::endl;
+    mat4f_t mat3 = mat1*mat2;
 
-    //test inverse
-    // mat = mat3f_inverse(mat);
-    // std::cout << mat << std::endl;
-
-    //test  inverse transpose
-    mat = mat3f_inverse_transpose(mat);
-    std::cout << mat << std::endl;
-
+    std::cout << mat1 <<std::endl;
+    std::cout << mat2 <<std::endl;
+    std::cout << mat3 <<std::endl;
 }
 
 void printInfo(float deltaTime){
@@ -71,7 +60,11 @@ void printInfo(float deltaTime){
     std::cout << "freq: " << freq << std::endl;
 }
 
+
+
 int main(){
+
+    
     float prev_time;
     callbacks_t callbacks;
     memset(&callbacks, 0, sizeof(callbacks_t));
@@ -88,7 +81,9 @@ int main(){
     lrMesh *mesh = new lrMesh("../resource/obj/african_head.obj");
     image_t * image = lrLoadTGAImage("../resource/obj/african_head_diffuse.tga");
 
-    lrColorTexture *texture = new lrColorTexture(image);
+    lrColorTexture *texture = new lrColorTexture(image);\
+
+    lrCamera *camera = new lrCamera();
 
     input_set_callbacks(window, callbacks);
     prev_time = platform_get_time();
@@ -108,11 +103,14 @@ int main(){
             PRINT_INFO = false;
         }
 
+        mat4f_t view = camera->lrLookAt();
+
+        std::cout << view << std::endl;
+
         
         for(int i=0;i<mesh->countEBO();i++){
             vec3i_t EBOVetex = mesh->getEBOVetex(i);
             vec3i_t EBOTesture = mesh->getEBOTexture(i);
-            //vec2i_t screenCoords[3];
             vec3f_t worldCoords[3];
             vec3i_t screenCoords[3];
             vec2f_t uvs[3];
@@ -131,17 +129,10 @@ int main(){
 
             n.normalize();
             float intensity = n*lightDir;
-
-            //std::cout << intensity << std::endl;
-            //intensity = 0.5;
             if(intensity>0){
-                // lrDrawTriangle3D(framebuffer, screenCoords, color);
                 lrDrawTriangle3DTexture(framebuffer, texture, screenCoords, uvs);
             }
         }
-
-        //lrDrawPoint2D(framebuffer, vec2i_t(1,300),vec4f_t(1,1,1,1));
-        //lrDrawTriangleLine2D(framebuffer, vec2i_t(100,0), vec2i_t(100,300), vec2i_t(500,300), vec4f_t(1,1,1,1));
 
         //window_draw_image(window,image);
         window_draw_buffer(window, framebuffer);

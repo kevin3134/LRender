@@ -4,8 +4,6 @@
 #include "../include/lrTexture.h"
 
 #include <assert.h>
-// #include <vector> 
-// #include <iostream> 
 
 static vec4f_t get_buffer_value(framebuffer_t *buffer, int row, int col) {
     int index = row * buffer->width + col;
@@ -44,16 +42,14 @@ void lrReleaseFramebuffer(framebuffer_t *framebuffer) {
 
 void lrClearColorFramebuffer(framebuffer_t *framebuffer, vec4f_t color) {
     int num_elems = framebuffer->width * framebuffer->height;
-    int i;
-    for (i = 0; i < num_elems; i++) {
+    for (int i = 0; i < num_elems; i++) {
         framebuffer->colorBuffer[i] = color;
     }
 }
 
 void lrClearDepthFramebuffer(framebuffer_t *framebuffer, float depth) {
     int num_elems = framebuffer->width * framebuffer->height;
-    int i;
-    for (i = 0; i < num_elems; i++) {
+    for (int i = 0; i < num_elems; i++) {
         framebuffer->depthBuffer[i] = depth;
     }
 }

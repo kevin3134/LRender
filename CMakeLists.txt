@@ -5,6 +5,8 @@
 cmake_minimum_required(VERSION 3.0)
 project(LRender)
 
+project(LRenderTest)
+
 
 aux_source_directory(. DIR_TOOT_SRCS)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g")
@@ -17,6 +19,7 @@ add_executable(LRender
     src/lrGraphic.cpp
     src/lrMesh.cpp
     src/lrTexture.cpp
+    src/lrCamera.cpp
     include/lrDisplay.h
     include/lrImage.h
     include/lrMacro.h
@@ -24,6 +27,25 @@ add_executable(LRender
     include/lrGraphic.h 
     include/lrMesh.h 
     include/lrTexture.h 
+    include/lrCamera.h
+)
+
+add_executable(LRenderTest 
+    test/main.cpp 
+    src/lrImage.cpp
+    src/lrMath.cpp
+    src/lrGraphic.cpp
+    src/lrMesh.cpp
+    src/lrTexture.cpp
+    src/lrCamera.cpp
+    include/lrDisplay.h
+    include/lrImage.h
+    include/lrMacro.h
+    include/lrMath.h
+    include/lrGraphic.h 
+    include/lrMesh.h 
+    include/lrTexture.h 
+    include/lrCamera.h
 )
  
 if(WIN32)

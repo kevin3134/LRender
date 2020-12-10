@@ -1,5 +1,6 @@
 #include "../include/lrMath.h"
 
+/*
 vec3f_t mat3f_mul_vec3f(mat3f_t m, vec3f_t v) {
 
     std::cout<< m[0] << std::endl;
@@ -74,7 +75,7 @@ mat3f_t mat3f_inverse_transpose(mat3f_t m) {
     }
     return inverse_transpose;
 }
-
+*/
 vec3f_t lrBarycentric(vec3f_t A, vec3f_t B, vec3f_t C, vec3f_t P) {
     vec3f_t s[2];
     for (int i=2; i--; ) {
