@@ -45,6 +45,7 @@ static void handle_key_message(window_t *window, WPARAM virtual_key,
         case 'W':       key = KEY_W;     break;
         case VK_SPACE:  key = KEY_SPACE; break;
         case VK_ESCAPE: key = KEY_ESC;   break;
+        case 'P':       key = KEY_P;     break;
         default:        key = KEY_NUM;   break;
     }
     if (key < KEY_NUM) {

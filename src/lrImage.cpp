@@ -155,16 +155,7 @@ image_t *lrLoadTGAImage(const char *filename){
     assert(depth == 8 || depth == 24 || depth == 32);
     channels = depth / 8;
 
-    // std::cout << "width: " << width << std::endl;
-    // std::cout << "height: " << height << std::endl;
-    // std::cout << "channels: " << channels << std::endl;
-
-
-
     image = lrCreateImage(width, height, channels);
-
-    // std::cout << "image buffer size: " << get_buffer_size(image) << std::endl;
-
 
 
     idlength = header[0];

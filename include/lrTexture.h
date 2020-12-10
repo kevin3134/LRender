@@ -10,20 +10,24 @@ class lrTexture{
         lrTexture(image_t *image);
         ~lrTexture();
 
-        vec3i_t lrGetTextureRGB(int row, int col);
-        vec4i_t lrGetTextureRGBA(int row, int col);
 
-        vec3f_t lrGetTextureRGBbyUV(float u, float v);
-        vec4f_t lrGetTextureRGBAbyUV(float u, float v);
-
-
-    private:
+    protected:
         int width;
         int height;
-        int channels = 4;
+        int channels;
         unsigned char *buffer;
 
-        int lrGetTextureIndex(int row, int col);
+        int lrGetTextureIndex(vec2f_t uv);
+};
+
+
+//channels should be 3 or 4
+class lrColorTexture : public lrTexture{
+    public:
+        lrColorTexture(image_t *image);
+        ~lrColorTexture();
+
+        vec4f_t lrGetTextureColor(vec2f_t uv);
 
 };
 

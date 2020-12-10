@@ -3,6 +3,7 @@
 
 #include "lrImage.h"
 #include "lrMath.h"
+#include "lrTexture.h"
 
 
 typedef struct {
@@ -33,7 +34,10 @@ void lrDrawTriangleLine2D(framebuffer_t *framebuffer, vec2i_t v1, vec2i_t v2, ve
 
 
 void lrDrawTriangle2D(framebuffer_t *framebuffer, vec2i_t v1, vec2i_t v2, vec2i_t v3, vec4f_t color);
-void lrDrawTriangle3D(framebuffer_t *framebuffer, vec3i_t v1, vec3i_t v2, vec3i_t v3, vec4f_t color);
+void lrDrawTriangle3D(framebuffer_t *framebuffer, vec3i_t *postion, vec4f_t color);
+
+void lrDrawTriangle3DTexture(framebuffer_t *framebuffer, lrColorTexture *texture, vec3i_t *postion, vec2f_t *textureUV);
+
 
 
 

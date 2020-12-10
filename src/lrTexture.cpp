@@ -13,7 +13,6 @@ lrTexture::lrTexture(image_t *image){
     int buffer_size = width * height * channels;
 
     buffer = (unsigned char*)malloc(buffer_size);
-
     for(int i=0;i<buffer_size;i++){
         buffer[i] = image->buffer[i];
     }
@@ -24,33 +23,36 @@ lrTexture::~lrTexture(){
     free(buffer);
 }
 
-int lrTexture::lrGetTextureIndex(int row, int col){
+int lrTexture::lrGetTextureIndex(vec2f_t uv){
+    //row = which height = y; col = which width = x
+    int row = (int)(uv.y*height);
+    int col = (int)(uv.x*width);
     int index = row * width * channels + col * channels;
-    //std::cout << row << std::endl;
+
     return index;
 }
 
 
-vec3i_t lrTexture::lrGetTextureRGB(int row, int col){
-    int index = lrGetTextureIndex(row,col);
-    return vec3i_t((int)buffer[index], (int)buffer[index+1],(int)buffer[index+2]);
-}
-
-vec4i_t lrTexture::lrGetTextureRGBA(int row, int col){
-    int index = lrGetTextureIndex(row,col);
-    return vec4i_t((int)buffer[index], (int)buffer[index+1],(int)buffer[index+2],(int)buffer[index+3]);
+lrColorTexture::lrColorTexture(image_t *image) : lrTexture(image) {
+    //TODO: assert channel is 3 or 4
 }
 
 
-vec3f_t lrTexture::lrGetTextureRGBbyUV(float u, float v){
-    vec3i_t textureInt = lrGetTextureRGB((int)(u*width), (int)(v*height));
-    std::cout << textureInt << std::endl;
-    return vec3f_t(textureInt.x/255.0,textureInt.y/255.0,textureInt.z/255.0);
+vec4f_t lrColorTexture::lrGetTextureColor(vec2f_t uv){
+    int index = lrGetTextureIndex(uv);
+    float blue =buffer[index]/255.0f;
+    float green =buffer[index+1]/255.0f;
+    float red =buffer[index+2]/255.0f;
+    float alpha = 0;
+
+    if(channels==4){
+        alpha = buffer[index+3]/255.0f;
+    }
+    return vec4f_t(red,green,blue,alpha);
 }
 
 
-vec4f_t lrTexture::lrGetTextureRGBAbyUV(float u, float v){
-    vec4i_t textureInt = lrGetTextureRGBA((int)(u*width), (int)(v*height));
-    std::cout << textureInt << std::endl;
-    return vec4f_t(textureInt.x/255.0,textureInt.y/255.0,textureInt.z/255.0,textureInt.w/255.0);
+
+lrColorTexture::~lrColorTexture(){
+    free(buffer);
 }
