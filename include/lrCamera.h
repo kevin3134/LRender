@@ -12,6 +12,7 @@ class lrCamera{
         void setEye(vec3f_t e){eye = e;}
 
         mat4f_t lrLookAt();
+        vec3f_t lrFront();
     private:
         vec3f_t eye;
         vec3f_t center;

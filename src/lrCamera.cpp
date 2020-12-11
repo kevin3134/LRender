@@ -20,3 +20,8 @@ mat4f_t lrCamera::lrLookAt(){
     }
     return view;
 }
+
+vec3f_t lrCamera::lrFront(){
+    //return eye - center;
+    return center - eye;
+}
