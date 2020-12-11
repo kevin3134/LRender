@@ -69,10 +69,7 @@ void printInfo(float deltaTime){
 }
 
 
-
 int main(){
-
-    
     float prev_time;
     callbacks_t callbacks;
     memset(&callbacks, 0, sizeof(callbacks_t));
@@ -100,12 +97,9 @@ int main(){
 
 
     while(!window_should_close(window)){
-        
-
+    
         lrClearColorFramebuffer(framebuffer, vec4f_t(0,0,0,1));
         lrClearDepthFramebuffer(framebuffer, 0);
-
-
 
         float curr_time = platform_get_time();
         float delta_time = curr_time - prev_time;
@@ -119,26 +113,20 @@ int main(){
 
         camera->setEye(currentEye);
         mat4f_t view = camera->lrLookAt();
-        //mat4f_t viewPort = lrViewPort(WINDOW_WIDTH/8, WINDOW_HEIGHT/8, WINDOW_WIDTH*3/4, WINDOW_HEIGHT*3/4);
         front =  camera->lrFront();
         mat4f_t viewPort = lrViewPort(0, 0, WINDOW_WIDTH*3/4, WINDOW_HEIGHT*3/4);
         mat4f_t projection = lrProjection(front);
 
-
-
         //std::cout << currentEye << std::endl;
         // std::cout << "view: \n" << view << std::endl;
         // std::cout << "viewPort: \n" << viewPort << std::endl;
-
-        
+ 
         for(int i=0;i<mesh->countEBO();i++){
             vec3i_t EBOVetex = mesh->getEBOVetex(i);
             vec3i_t EBOTesture = mesh->getEBOTexture(i);
             vec3f_t worldCoords[3];
             vec3i_t screenCoords[3];
             vec2f_t uvs[3];
-
-
 
 
             for(int j=0;j<3;j++){
