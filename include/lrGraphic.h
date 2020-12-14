@@ -53,15 +53,27 @@ static mat4f_t lrViewPort(int x, int y, int w, int h){
     return m;
 }
 
-static mat4f_t lrProjection(vec3f_t dir){
-    float coeff = -1.f/dir.norm();
+
+static mat4f_t lrPerspective(float fovy, float aspect, float near, float far){
     mat4f_t m;
 
-    //std::cout << coeff << std::endl;
-    m[3][2] = coeff;
+
+    float z_range = far - near;
+    float tanHalfFovy = tan(fovy/2.0f);
+
+    m[0][0] = 1.0f/ (aspect * tanHalfFovy);
+    m[1][1] = 1.0f/ tanHalfFovy;
+    //m[2][2] = -(near + far) / (far - near);
+    //m[3][2] = -1;
+    //m[2][3] = -far * near /  (far - near);
+    // m[2][3] = -1;
+    // m[3][2] = -2 * far * near /  (far - near);
+    //m[3][3] = 0;
+
+    //std::cout << m <<std::endl;
+
     return m;
 }
-
 
 
 #endif

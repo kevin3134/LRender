@@ -28,6 +28,8 @@ static const int WINDOW_HEIGHT = 800;
 
 static bool PRINT_INFO = false;
 vec3f_t currentEye(0,0,0);
+float currentZoom = 30;
+
 CameraMovement currentMove = CameraMovement::STOP;
 
 
@@ -47,6 +49,12 @@ static void key_callback(window_t *window, keycode_t key, int pressed) {
         currentMove = CameraMovement::UPWARD;
     }else if(key == keycode_t::KEY_S){
         currentMove = CameraMovement::DOWNWARD;
+    }else if(key == keycode_t::KEY_PLUS){
+        if(currentZoom>0) currentZoom--;
+        //std::cout << "currentZoom: "<< currentZoom << std::endl;
+    }else if(key == keycode_t::KEY_MINS){
+        if(currentZoom<180) currentZoom++;
+        //std::cout << "currentZoom: "<< currentZoom << std::endl;
     }
 }
 
@@ -124,9 +132,15 @@ int main(){
         //camera->setEye(currentEye);
         mat4f_t view = camera->lrLookAt();
         front =  camera->lrFront();
-        mat4f_t viewPort = lrViewPort(0, 0, WINDOW_WIDTH*3/4, WINDOW_HEIGHT*3/4);
-        mat4f_t projection;// = lrProjection(front);
+        //mat4f_t viewPort = lrViewPort(0, 0, WINDOW_WIDTH*3/4, WINDOW_HEIGHT*3/4);
+
+        
+        mat4f_t viewPort = lrViewPort(300, 300, 100, 100);
+
+        //mat4f_t projection;// = lrProjection(front);
         //mat4f_t projection = lrProjection(front);
+        mat4f_t projection =  lrPerspective(TO_RADIANS(currentZoom), 1.0f, 0.1f, 100.0f);
+
 
 
 
@@ -175,9 +189,9 @@ int main(){
 
             n.normalize();
             float intensity = n*front;
-            if(intensity<0){
+            //if(intensity<0){
                 lrDrawTriangle3DTexture(framebuffer, texture, screenCoords, uvs);
-            }
+            //}
         }
 
         //window_draw_image(window,image);

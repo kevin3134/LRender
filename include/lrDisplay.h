@@ -5,7 +5,7 @@
 #include "lrGraphic.h"
 
 typedef struct window window_t;
-typedef enum {KEY_A, KEY_D, KEY_S, KEY_W, KEY_SPACE, KEY_ESC, KEY_P, KEY_NUM} keycode_t;
+typedef enum {KEY_A, KEY_D, KEY_S, KEY_W, KEY_SPACE, KEY_ESC, KEY_P, KEY_PLUS, KEY_MINS, KEY_NUM} keycode_t;
 typedef enum {BUTTON_L, BUTTON_R, BUTTON_NUM} button_t;
 typedef struct {
     void (*key_callback)(window_t *window, keycode_t key, int pressed);

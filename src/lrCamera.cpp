@@ -31,7 +31,7 @@ void lrCamera::cameraMove(CameraMovement direction){
         eye = eye + right * SPEED;
     }
 
-    eye = (eye - center).normalize() + center;
+    eye = (eye - center).normalize() * distance + center;
         
     updateCameraVectors();
 }

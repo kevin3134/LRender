@@ -39,14 +39,16 @@ static void handle_key_message(window_t *window, WPARAM virtual_key,
                                char pressed) {
     keycode_t key;
     switch (virtual_key) {
-        case 'A':       key = KEY_A;     break;
-        case 'D':       key = KEY_D;     break;
-        case 'S':       key = KEY_S;     break;
-        case 'W':       key = KEY_W;     break;
-        case VK_SPACE:  key = KEY_SPACE; break;
-        case VK_ESCAPE: key = KEY_ESC;   break;
-        case 'P':       key = KEY_P;     break;
-        default:        key = KEY_NUM;   break;
+        case 'A':         key = KEY_A;     break;
+        case 'D':         key = KEY_D;     break;
+        case 'S':         key = KEY_S;     break;
+        case 'W':         key = KEY_W;     break;
+        case VK_SPACE:    key = KEY_SPACE; break;
+        case VK_ESCAPE:   key = KEY_ESC;   break;
+        case 'P':         key = KEY_P;     break;
+        case VK_ADD:      key = KEY_PLUS;  break;
+        case VK_SUBTRACT: key = KEY_MINS;  break;
+        default:          key = KEY_NUM;   break;
     }
     if (key < KEY_NUM) {
         window->keys[key] = pressed;

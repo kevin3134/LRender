@@ -45,6 +45,8 @@ class lrCamera{
         vec3f_t front;
         vec3f_t right;
 
+        float distance = 5.0f;
+
         void updateCameraVectors();
 };
 
