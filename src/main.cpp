@@ -27,22 +27,26 @@ static const int WINDOW_WIDTH = 800;
 static const int WINDOW_HEIGHT = 800;
 
 static bool PRINT_INFO = false;
-vec3f_t currentEye(0,-5,1);
+vec3f_t currentEye(0,0,0);
+CameraMovement currentMove = CameraMovement::STOP;
+
 
 static void key_callback(window_t *window, keycode_t key, int pressed) {
     //std::cout << "press key: " << key << " pressed: " << pressed << std::endl;
+    if(pressed==0) return;
+
     if(key == keycode_t::KEY_ESC){
         window->should_close = 1;
     }else if(key == keycode_t::KEY_P){
         PRINT_INFO = true;
     }else if(key == keycode_t::KEY_A){
-        currentEye.x-=1;
+        currentMove = CameraMovement::LEFT;
     }else if(key == keycode_t::KEY_D){
-        currentEye.x+=1;
+        currentMove = CameraMovement::RIGHT;
     }else if(key == keycode_t::KEY_W){
-        currentEye.z+=1;
+        currentMove = CameraMovement::UPWARD;
     }else if(key == keycode_t::KEY_S){
-        currentEye.z-=1;
+        currentMove = CameraMovement::DOWNWARD;
     }
 }
 
@@ -61,11 +65,19 @@ void test_lrMath(){
     std::cout << mat3 <<std::endl;
 }
 
-void printInfo(float deltaTime){
+void printInfo(float deltaTime, mat4f_t view, lrCamera * cam){
     int freq = 1.0/deltaTime;
     std::cout << "CURRENT STATUS:" << std::endl;
     std::cout << "freq: " << freq << std::endl;
-    std::cout << "currentEye: " << currentEye << std::endl;
+
+    vec3f_t eye = cam->lrgetEye();
+    vec3f_t front = cam->lrFront();
+    vec3f_t right = cam->lrgetRight();
+    std::cout << "front: " << front << std::endl;
+    std::cout << "eye: " << eye << std::endl;
+    std::cout << "right: " << right << std::endl;
+
+    //std::cout << "view matrix: \n" << view << std::endl;
 }
 
 
@@ -80,42 +92,56 @@ int main(){
     window_t* window = window_create("LRender", WINDOW_WIDTH, WINDOW_HEIGHT);
     framebuffer_t *framebuffer = lrCreateFramebuffer(WINDOW_WIDTH, WINDOW_HEIGHT);
 
-    lrMesh *mesh= new lrMesh("../resource/witch/witch.obj");    
-    image_t * image = lrLoadTGAImage("../resource/witch/witch_diffuse.tga");
+    // lrMesh *mesh= new lrMesh("../resource/witch/witch.obj");    
+    // image_t * image = lrLoadTGAImage("../resource/witch/witch_diffuse.tga");
 
-    // lrMesh *mesh = new lrMesh("../resource/obj/african_head.obj");
-    // image_t * image = lrLoadTGAImage("../resource/obj/african_head_diffuse.tga");
+    lrMesh *mesh = new lrMesh("../resource/obj/african_head.obj");
+    image_t * image = lrLoadTGAImage("../resource/obj/african_head_diffuse.tga");
 
-    lrColorTexture *texture = new lrColorTexture(image);\
+    lrColorTexture *texture = new lrColorTexture(image);
 
     lrCamera *camera = new lrCamera();
+    camera->setEye(currentEye);
 
     input_set_callbacks(window, callbacks);
     prev_time = platform_get_time();
 
-    vec3f_t front(0,0,-1);
+
+    //front is eye - center
+    vec3f_t front(0,0,1);
 
 
     while(!window_should_close(window)){
     
-        lrClearColorFramebuffer(framebuffer, vec4f_t(0,0,0,1));
-        lrClearDepthFramebuffer(framebuffer, 0);
 
         float curr_time = platform_get_time();
         float delta_time = curr_time - prev_time;
         prev_time = curr_time;
 
+
+
+        camera->cameraMove(currentMove);
+        //camera->setEye(currentEye);
+        mat4f_t view = camera->lrLookAt();
+        front =  camera->lrFront();
+        mat4f_t viewPort = lrViewPort(0, 0, WINDOW_WIDTH*3/4, WINDOW_HEIGHT*3/4);
+        mat4f_t projection;// = lrProjection(front);
+        //mat4f_t projection = lrProjection(front);
+
+
+
+
         if(PRINT_INFO){
-            printInfo(delta_time);
+            printInfo(delta_time, view, camera);
             PRINT_INFO = false;
         }
 
 
-        camera->setEye(currentEye);
-        mat4f_t view = camera->lrLookAt();
-        front =  camera->lrFront();
-        mat4f_t viewPort = lrViewPort(0, 0, WINDOW_WIDTH*3/4, WINDOW_HEIGHT*3/4);
-        mat4f_t projection = lrProjection(front);
+
+
+        currentMove = CameraMovement::STOP;
+        lrClearColorFramebuffer(framebuffer, vec4f_t(0,0,0,1));
+        lrClearDepthFramebuffer(framebuffer, 0);
 
         //std::cout << currentEye << std::endl;
         // std::cout << "view: \n" << view << std::endl;
@@ -149,7 +175,7 @@ int main(){
 
             n.normalize();
             float intensity = n*front;
-            if(intensity>0){
+            if(intensity<0){
                 lrDrawTriangle3DTexture(framebuffer, texture, screenCoords, uvs);
             }
         }
