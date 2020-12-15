@@ -50,11 +50,9 @@ static void key_callback(window_t *window, keycode_t key, int pressed) {
     }else if(key == keycode_t::KEY_S){
         currentMove = CameraMovement::DOWNWARD;
     }else if(key == keycode_t::KEY_PLUS){
-        if(currentZoom>0) currentZoom--;
-        //std::cout << "currentZoom: "<< currentZoom << std::endl;
+        currentMove = CameraMovement::FORWARD;
     }else if(key == keycode_t::KEY_MINS){
-        if(currentZoom<180) currentZoom++;
-        //std::cout << "currentZoom: "<< currentZoom << std::endl;
+        currentMove = CameraMovement::BACKWARD;
     }
 }
 
@@ -85,7 +83,7 @@ void printInfo(float deltaTime, mat4f_t view, lrCamera * cam){
     std::cout << "eye: " << eye << std::endl;
     std::cout << "right: " << right << std::endl;
 
-    //std::cout << "view matrix: \n" << view << std::endl;
+    std::cout << "view matrix: \n" << view << std::endl;
 }
 
 
@@ -135,11 +133,14 @@ int main(){
         //mat4f_t viewPort = lrViewPort(0, 0, WINDOW_WIDTH*3/4, WINDOW_HEIGHT*3/4);
 
         
-        mat4f_t viewPort = lrViewPort(300, 300, 100, 100);
+        //mat4f_t viewPort;
+        //mat4f_t viewPort = lrViewPort(100, 100, 10, 10);
+        mat4f_t viewPort = lrViewPort(200, 200, 200, 200);
 
-        //mat4f_t projection;// = lrProjection(front);
+
+        //mat4f_t projection;
         //mat4f_t projection = lrProjection(front);
-        mat4f_t projection =  lrPerspective(TO_RADIANS(currentZoom), 1.0f, 0.1f, 100.0f);
+        mat4f_t projection =  lrPerspective(TO_RADIANS(130.0f), (float)WINDOW_WIDTH/WINDOW_HEIGHT, 0.1f, 100.0f);
 
 
 
@@ -157,10 +158,6 @@ int main(){
         lrClearColorFramebuffer(framebuffer, vec4f_t(0,0,0,1));
         lrClearDepthFramebuffer(framebuffer, 0);
 
-        //std::cout << currentEye << std::endl;
-        // std::cout << "view: \n" << view << std::endl;
-        // std::cout << "viewPort: \n" << viewPort << std::endl;
- 
         for(int i=0;i<mesh->countEBO();i++){
             vec3i_t EBOVetex = mesh->getEBOVetex(i);
             vec3i_t EBOTesture = mesh->getEBOTexture(i);
@@ -170,7 +167,9 @@ int main(){
 
 
             for(int j=0;j<3;j++){
-                worldCoords[j] = mesh->getScaledVBOPostion(EBOVetex[j]);
+                //worldCoords[j] = mesh->getScaledVBOPostion(EBOVetex[j]);
+
+                worldCoords[j] = mesh->getVBOPostion(EBOVetex[j]);
 
                 vec4f_t temp1 = vec4f_t(worldCoords[j][0],worldCoords[j][1],worldCoords[j][2],1);
 

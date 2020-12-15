@@ -63,14 +63,12 @@ static mat4f_t lrPerspective(float fovy, float aspect, float near, float far){
 
     m[0][0] = 1.0f/ (aspect * tanHalfFovy);
     m[1][1] = 1.0f/ tanHalfFovy;
-    //m[2][2] = -(near + far) / (far - near);
-    //m[3][2] = -1;
-    //m[2][3] = -far * near /  (far - near);
-    // m[2][3] = -1;
-    // m[3][2] = -2 * far * near /  (far - near);
-    //m[3][3] = 0;
+    m[2][2] = -(near + far) / (far - near);
+    m[2][3] = -1;
+    m[3][2] = -2* far * near / (far - near);
+    m[3][3] = 0;
 
-    //std::cout << m <<std::endl;
+    //std::cout << fovy <<std::endl;
 
     return m;
 }

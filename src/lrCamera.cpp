@@ -29,6 +29,10 @@ void lrCamera::cameraMove(CameraMovement direction){
         eye = eye - right * SPEED;
     }else if (direction == RIGHT){
         eye = eye + right * SPEED;
+    }else if(direction == FORWARD){
+        subDistance();
+    }else if(direction == BACKWARD){
+        addDistance();
     }
 
     eye = (eye - center).normalize() * distance + center;
@@ -36,20 +40,42 @@ void lrCamera::cameraMove(CameraMovement direction){
     updateCameraVectors();
 }
 
+// mat4f_t lrCamera::lrLookAt(){
+
+//     vec3f_t z = front;
+//     vec3f_t x = right;
+//     vec3f_t y = up;
+
+//     mat4f_t view;
+//     for(int i=0;i<3;i++){
+//         view[0][i] = x[i];
+//         view[1][i] = y[i];
+//         view[2][i] = z[i];
+//         view[i][3] = -center[i];
+//     }
+//     return view;
+// }
+
 mat4f_t lrCamera::lrLookAt(){
 
-    vec3f_t z = front;
-    vec3f_t x = right;
-    vec3f_t y = up;
+    vec3f_t f = front;
+    vec3f_t s = right;
+    vec3f_t u = up;
 
-    mat4f_t view;
-    for(int i=0;i<3;i++){
-        view[0][i] = x[i];
-        view[1][i] = y[i];
-        view[2][i] = z[i];
-        view[i][3] = -center[i];
-    }
-    return view;
+    mat4f_t Result;
+    Result[0][0] = s.x;
+    Result[0][1] = s.y;
+    Result[0][2] = s.z;
+    Result[1][0] = u.x;
+    Result[1][1] = u.y;
+    Result[1][2] = u.z;
+    Result[2][0] =-f.x;
+    Result[2][1] =-f.y;
+    Result[2][2] =-f.z;
+    Result[0][3] =- (s*eye);
+    Result[1][3] =- (u*eye);
+    Result[2][3] = f*eye;
+    return Result;
 }
 
 vec3f_t lrCamera::lrFront(){

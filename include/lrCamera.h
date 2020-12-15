@@ -8,6 +8,8 @@ enum CameraMovement {
     DOWNWARD,
     LEFT,
     RIGHT,
+    FORWARD,
+    BACKWARD,
     STOP
 };
 
@@ -36,6 +38,9 @@ class lrCamera{
 
         vec3f_t lrgetEye(){return eye;}
         vec3f_t lrgetRight(){return right;}
+
+        void addDistance() {distance+=0.1;}
+        void subDistance() {distance-=0.1;}
     private:
         vec3f_t eye;
         vec3f_t center;
