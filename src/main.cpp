@@ -79,9 +79,13 @@ void printInfo(float deltaTime, mat4f_t view, lrCamera * cam){
     vec3f_t eye = cam->lrgetEye();
     vec3f_t front = cam->lrFront();
     vec3f_t right = cam->lrgetRight();
+    vec3f_t up = cam->lrgetUp();
     std::cout << "front: " << front << std::endl;
     std::cout << "eye: " << eye << std::endl;
     std::cout << "right: " << right << std::endl;
+    std::cout << "up: " << up << std::endl;
+    std::cout << "distance:" << cam->getDistance() << std::endl;
+
 
     std::cout << "view matrix: \n" << view << std::endl;
 }
@@ -118,46 +122,40 @@ int main(){
 
 
     while(!window_should_close(window)){
-    
-
         float curr_time = platform_get_time();
         float delta_time = curr_time - prev_time;
         prev_time = curr_time;
 
-
-
         camera->cameraMove(currentMove);
-        //camera->setEye(currentEye);
+        //mat4f_t view;
         mat4f_t view = camera->lrLookAt();
         front =  camera->lrFront();
-        //mat4f_t viewPort = lrViewPort(0, 0, WINDOW_WIDTH*3/4, WINDOW_HEIGHT*3/4);
 
         
         //mat4f_t viewPort;
-        //mat4f_t viewPort = lrViewPort(100, 100, 10, 10);
-        mat4f_t viewPort = lrViewPort(200, 200, 200, 200);
+        mat4f_t viewPort = lrViewPort(200, 200, 300, 300);
 
 
         //mat4f_t projection;
-        //mat4f_t projection = lrProjection(front);
-        mat4f_t projection =  lrPerspective(TO_RADIANS(130.0f), (float)WINDOW_WIDTH/WINDOW_HEIGHT, 0.1f, 100.0f);
+        mat4f_t projection =  lrPerspective(TO_RADIANS(60.0f), (float)WINDOW_WIDTH/WINDOW_HEIGHT, 0.1f, 1000.0f);
 
-
-
-
-
+        //print information when press key_P
         if(PRINT_INFO){
             printInfo(delta_time, view, camera);
             PRINT_INFO = false;
         }
 
 
-
-
+        //clear states every round
         currentMove = CameraMovement::STOP;
         lrClearColorFramebuffer(framebuffer, vec4f_t(0,0,0,1));
-        lrClearDepthFramebuffer(framebuffer, 0);
+        lrClearDepthFramebuffer(framebuffer, 10000);
 
+
+        float min = 10000;
+        float max = -10000;
+
+        
         for(int i=0;i<mesh->countEBO();i++){
             vec3i_t EBOVetex = mesh->getEBOVetex(i);
             vec3i_t EBOTesture = mesh->getEBOTexture(i);
@@ -171,14 +169,12 @@ int main(){
 
                 worldCoords[j] = mesh->getVBOPostion(EBOVetex[j]);
 
-                vec4f_t temp1 = vec4f_t(worldCoords[j][0],worldCoords[j][1],worldCoords[j][2],1);
+                vec4f_t currentWorldCoords = vec4f_t(worldCoords[j][0],worldCoords[j][1],worldCoords[j][2],1);      
+                vec4f_t screenCoords4D = viewPort * projection * view * currentWorldCoords;
 
-                
-                vec4f_t temp2 = viewPort * projection * view * temp1;
-
-                int x = temp2.x/temp2.w;
-                int y = temp2.y/temp2.w;
-                int z = temp2.z/temp2.w;
+                int x = screenCoords4D.x/screenCoords4D.w;
+                int y = screenCoords4D.y/screenCoords4D.w;
+                int z = screenCoords4D.z/screenCoords4D.w;
 
                 screenCoords[j]=vec3i_t(x,y,z);
 

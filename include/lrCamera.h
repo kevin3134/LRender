@@ -38,9 +38,12 @@ class lrCamera{
 
         vec3f_t lrgetEye(){return eye;}
         vec3f_t lrgetRight(){return right;}
+        vec3f_t lrgetUp(){return up;}
 
-        void addDistance() {distance+=0.1;}
-        void subDistance() {distance-=0.1;}
+        void addDistance() {if(distance<20.0f) distance+=0.1;}
+        void subDistance() {if(distance>2.0f) distance-=0.1;}
+
+        float getDistance(){return distance;}
     private:
         vec3f_t eye;
         vec3f_t center;

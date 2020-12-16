@@ -17,7 +17,7 @@ static unsigned char float_to_uchar(float value) {
 
 framebuffer_t *lrCreateFramebuffer(int width, int height) {
     vec4f_t defaultColor = {0, 0, 0, 1};
-    float defaultDepth = 1;
+    float defaultDepth = 10000;
     int num_elems = width * height;
     framebuffer_t *framebuffer;
 
@@ -190,6 +190,8 @@ void lrDrawTriangle3DTexture(framebuffer_t *framebuffer, lrColorTexture *texture
 
     for (P.x=bboxmin.x; P.x<=bboxmax.x; P.x++) { 
         for (P.y=bboxmin.y; P.y<=bboxmax.y; P.y++) { 
+            if(P.y<0||P.y>800||P.x<0||P.y>800) continue;
+            
             vec3f_t bc_screen  = lrBarycentric(vec3f_t(v1[0],v1[1],v1[2]),vec3f_t(v2[0],v2[1],v2[2]),vec3f_t(v3[0],v3[1],v3[2]),vec3f_t(P[0],P[1],P[2])); 
             if (bc_screen.x<0 || bc_screen.y<0 || bc_screen.z<0) continue; 
 
@@ -200,15 +202,18 @@ void lrDrawTriangle3DTexture(framebuffer_t *framebuffer, lrColorTexture *texture
 
             vec4f_t color = texture->lrGetTextureColor(uv);
 
-            if(framebuffer->depthBuffer[int(P.x+P.y*width)] < P.z){
+            // if(framebuffer->depthBuffer[int(P.x+P.y*width)] < P.z){
+            //     framebuffer->depthBuffer[int(P.x+P.y*width)] = P.z;
+            //     lrDrawPoint2D(framebuffer, vec2i_t(P.x,P.y), color); 
+            // }
+
+            if(framebuffer->depthBuffer[int(P.x+P.y*width)] > P.z){
                 framebuffer->depthBuffer[int(P.x+P.y*width)] = P.z;
                 lrDrawPoint2D(framebuffer, vec2i_t(P.x,P.y), color); 
             }
         } 
     } 
 }
-
-
 
 
 void lrBlitBuffer(framebuffer_t *src, image_t *dst){
