@@ -10,6 +10,7 @@ typedef struct {
     int width, height;
     vec4f_t *colorBuffer;
     float *depthBuffer;
+    int drawCount;
 } framebuffer_t;
 
 
@@ -46,7 +47,6 @@ static mat4f_t lrViewPort(int x, int y, int w, int h){
     m[0][3] = x+w/2.f;
     m[1][3] = y+h/2.f;
     m[2][3] = depth/2.f;
-    //m[2][3] = -depth;
 
     m[0][0] = w/2.f;
     m[1][1] = h/2.f;

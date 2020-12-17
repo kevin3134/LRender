@@ -71,10 +71,11 @@ void test_lrMath(){
     std::cout << mat3 <<std::endl;
 }
 
-void printInfo(float deltaTime, mat4f_t view, lrCamera * cam){
+void printInfo(float deltaTime, mat4f_t view, lrCamera * cam, framebuffer_t* framebuffer){
     int freq = 1.0/deltaTime;
     std::cout << "CURRENT STATUS:" << std::endl;
     std::cout << "freq: " << freq << std::endl;
+    std::cout << "drawCount: " << framebuffer->drawCount << std::endl;
 
     vec3f_t eye = cam->lrgetEye();
     vec3f_t front = cam->lrFront();
@@ -141,11 +142,12 @@ int main(){
 
         //print information when press key_P
         if(PRINT_INFO){
-            printInfo(delta_time, view, camera);
+            printInfo(delta_time, view, camera, framebuffer);
             PRINT_INFO = false;
         }
 
 
+        framebuffer->drawCount = 0;
         //clear states every round
         currentMove = CameraMovement::STOP;
         lrClearColorFramebuffer(framebuffer, vec4f_t(0,0,0,1));
@@ -180,10 +182,10 @@ int main(){
 
                 uvs[j]=mesh->getTextureUV(EBOTesture[j]);
             }
-            vec3f_t n = (worldCoords[2]-worldCoords[0])^(worldCoords[1]-worldCoords[0]); 
+            //vec3f_t n = (worldCoords[2]-worldCoords[0])^(worldCoords[1]-worldCoords[0]); 
 
-            n.normalize();
-            float intensity = n*front;
+            //n.normalize();
+            //float intensity = n*front;
             //if(intensity<0){
                 lrDrawTriangle3DTexture(framebuffer, texture, screenCoords, uvs);
             //}

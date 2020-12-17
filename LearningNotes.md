@@ -28,10 +28,32 @@ refer about this: https://stackoverrun.com/cn/q/1237360
 || 视角矩阵  
 屏幕坐标系
 
+## 视图矩阵
+视图矩阵控制观察的方向和距离（glLookat中相机的位置）  
+对应函数为lrLookAt  
+ 
+  right.x  right.y  right.z  -dot(right,eye)  
+  up.x     up.y     up.z     -dot(up,eye)  
+  front.x  front.y  front.z  -dot(front,eye)  
+        0        0        0           1  
+参考： http://www.songho.ca/opengl/gl_camera.html  
+
+
 ## 投影矩阵
+
 投影矩阵的远平面和近平面是相对于眼睛，在远平面外的物体是看不到的;
 投影矩阵变换后，结果会在-1,1的一个立方体中
-参考： http://www.songho.ca/opengl/gl_projectionmatrix.html
+r = right; l=left; n = near; f = far
+r-l 和 t-b 可以通过aspect(width/height)和fovy计算
+
+  2/(r-l)        0         0  -(r+l)/(r-l)  
+        0  2/(t-b)         0  -(t+b)/(t-b)  
+        0        0  -2/(f-n)  -(f+n)/(f-n)  
+        0        0         0             1  
+ 
+参考： 
+http://www.songho.ca/opengl/gl_projectionmatrix.html
+http://docs.gl/gl2/glOrtho
 
 ## 关于GLM
 视图矩阵和投影矩阵来自GLM库，但是GLM库中的矩阵是和我们认知矩阵转置的  

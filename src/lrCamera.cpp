@@ -45,9 +45,9 @@ void lrCamera::cameraMove(CameraMovement direction){
 
 mat4f_t lrCamera::lrLookAt(){
 
-    vec3f_t f = (eye - center).normalize();
-    vec3f_t s = (worldUp^front).normalize();
-    vec3f_t u = (front^right);
+    vec3f_t f = front;
+    vec3f_t s = right;
+    vec3f_t u = up;
 
     mat4f_t Result;
     Result[0][0] = s.x;
