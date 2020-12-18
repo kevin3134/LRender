@@ -18,9 +18,10 @@ class lrMesh{
         std::vector<vec3i_t> getEBO(int n);
         vec3i_t getEBOVetex(int n);
         vec3i_t getEBOTexture(int n);
-
+        vec3i_t getEBONorm(int n);
 
         vec2f_t getTextureUV(int n);
+        vec3f_t getNorm(int n);
 
     private:
         //list of vertices (x,y,z)
@@ -38,6 +39,5 @@ class lrMesh{
 
 };
 
-lrMesh lrLoadMesh(const char *filename);
 
 #endif

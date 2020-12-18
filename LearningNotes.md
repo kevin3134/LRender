@@ -33,9 +33,9 @@ refer about this: https://stackoverrun.com/cn/q/1237360
 对应函数为lrLookAt  
  
   right.x  right.y  right.z  -dot(right,eye)  
-  up.x     up.y     up.z     -dot(up,eye)  
+     up.x     up.y     up.z     -dot(up,eye)  
   front.x  front.y  front.z  -dot(front,eye)  
-        0        0        0           1  
+        0        0        0                1  
 参考： http://www.songho.ca/opengl/gl_camera.html  
 
 

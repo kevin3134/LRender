@@ -5,6 +5,7 @@
 #include "../include/lrMesh.h"
 #include "../include/lrTexture.h"
 #include "../include/lrCamera.h"
+#include "../include/lrShader.h"
 
 
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
@@ -32,6 +33,14 @@ float currentZoom = 30;
 
 CameraMovement currentMove = CameraMovement::STOP;
 
+lrMesh *mesh;
+
+mat4f_t view;
+mat4f_t viewPort;
+mat4f_t projection;
+mat4f_t model;
+
+vec3f_t front(0,0,1);
 
 static void key_callback(window_t *window, keycode_t key, int pressed) {
     //std::cout << "press key: " << key << " pressed: " << pressed << std::endl;
@@ -57,20 +66,6 @@ static void key_callback(window_t *window, keycode_t key, int pressed) {
 }
 
 
-void test_lrMath(){
-    vec4f_t vec1(1,1,1,1);
-    vec4f_t vec2(1,1,1,1);
-
-    mat4f_t mat1(1,2,3,4,0,1,4,6,5,6,0,7,0,0,0,1);
-    mat4f_t mat2(1,2,3,4,0,1,4,6,5,6,0,7,0,0,0,1);
-
-    mat4f_t mat3 = mat1*mat2;
-
-    std::cout << mat1 <<std::endl;
-    std::cout << mat2 <<std::endl;
-    std::cout << mat3 <<std::endl;
-}
-
 void printInfo(float deltaTime, mat4f_t view, lrCamera * cam, framebuffer_t* framebuffer){
     int freq = 1.0/deltaTime;
     std::cout << "CURRENT STATUS:" << std::endl;
@@ -86,10 +81,28 @@ void printInfo(float deltaTime, mat4f_t view, lrCamera * cam, framebuffer_t* fra
     std::cout << "right: " << right << std::endl;
     std::cout << "up: " << up << std::endl;
     std::cout << "distance:" << cam->getDistance() << std::endl;
-
-
     std::cout << "view matrix: \n" << view << std::endl;
 }
+
+
+class lrGouraudShader : public lrShader {
+    public:
+        virtual ~lrGouraudShader(){};
+        virtual vec4f_t vertex(int EBO, int nthvert){
+            vec3f_t norm = mesh->getNorm(mesh->getEBONorm(EBO)[nthvert]);
+            vertexIntensity[nthvert] = lrMax(0.f, norm*front );
+            vec4f_t gl_Vertex = vec4f_t(mesh->getVBOPostion(mesh->getEBOVetex(EBO)[nthvert]),1);
+            return viewPort * projection * view * model * gl_Vertex;
+        }
+
+        virtual bool fragment(vec3f_t bar, vec4f_t &color){
+            float intensity = vertexIntensity*bar;
+            color = vec4f_t(intensity,intensity,intensity,1);
+            return false;
+        }
+    private:
+        vec3f_t vertexIntensity;
+};
 
 
 int main(){
@@ -103,10 +116,10 @@ int main(){
     window_t* window = window_create("LRender", WINDOW_WIDTH, WINDOW_HEIGHT);
     framebuffer_t *framebuffer = lrCreateFramebuffer(WINDOW_WIDTH, WINDOW_HEIGHT);
 
-    // lrMesh *mesh= new lrMesh("../resource/witch/witch.obj");    
+    // mesh= new lrMesh("../resource/witch/witch.obj");    
     // image_t * image = lrLoadTGAImage("../resource/witch/witch_diffuse.tga");
 
-    lrMesh *mesh = new lrMesh("../resource/obj/african_head.obj");
+    mesh = new lrMesh("../resource/obj/african_head.obj");
     image_t * image = lrLoadTGAImage("../resource/obj/african_head_diffuse.tga");
 
     lrColorTexture *texture = new lrColorTexture(image);
@@ -117,10 +130,7 @@ int main(){
     input_set_callbacks(window, callbacks);
     prev_time = platform_get_time();
 
-
-    //front is eye - center
-    vec3f_t front(0,0,1);
-
+    lrShader *shader = new lrGouraudShader();
 
     while(!window_should_close(window)){
         float curr_time = platform_get_time();
@@ -128,17 +138,11 @@ int main(){
         prev_time = curr_time;
 
         camera->cameraMove(currentMove);
-        //mat4f_t view;
-        mat4f_t view = camera->lrLookAt();
         front =  camera->lrFront();
 
-        
-        //mat4f_t viewPort;
-        mat4f_t viewPort = lrViewPort(200, 200, 300, 300);
-
-
-        //mat4f_t projection;
-        mat4f_t projection =  lrPerspective(TO_RADIANS(60.0f), (float)WINDOW_WIDTH/WINDOW_HEIGHT, 0.1f, 1000.0f);
+        view = camera->lrLookAt();
+        projection =  lrPerspective(TO_RADIANS(30.0f), (float)WINDOW_WIDTH/WINDOW_HEIGHT, 0.1f, 1000.0f);
+        viewPort = lrViewPort(200, 200, 300, 300);
 
         //print information when press key_P
         if(PRINT_INFO){
@@ -146,33 +150,22 @@ int main(){
             PRINT_INFO = false;
         }
 
-
         framebuffer->drawCount = 0;
         //clear states every round
         currentMove = CameraMovement::STOP;
         lrClearColorFramebuffer(framebuffer, vec4f_t(0,0,0,1));
         lrClearDepthFramebuffer(framebuffer, 10000);
 
-
-        float min = 10000;
-        float max = -10000;
-
         
         for(int i=0;i<mesh->countEBO();i++){
             vec3i_t EBOVetex = mesh->getEBOVetex(i);
             vec3i_t EBOTesture = mesh->getEBOTexture(i);
-            vec3f_t worldCoords[3];
             vec3i_t screenCoords[3];
             vec2f_t uvs[3];
 
 
             for(int j=0;j<3;j++){
-                //worldCoords[j] = mesh->getScaledVBOPostion(EBOVetex[j]);
-
-                worldCoords[j] = mesh->getVBOPostion(EBOVetex[j]);
-
-                vec4f_t currentWorldCoords = vec4f_t(worldCoords[j][0],worldCoords[j][1],worldCoords[j][2],1);      
-                vec4f_t screenCoords4D = viewPort * projection * view * currentWorldCoords;
+                vec4f_t screenCoords4D = shader->vertex(i,j);
 
                 int x = screenCoords4D.x/screenCoords4D.w;
                 int y = screenCoords4D.y/screenCoords4D.w;
@@ -182,16 +175,10 @@ int main(){
 
                 uvs[j]=mesh->getTextureUV(EBOTesture[j]);
             }
-            //vec3f_t n = (worldCoords[2]-worldCoords[0])^(worldCoords[1]-worldCoords[0]); 
-
-            //n.normalize();
-            //float intensity = n*front;
-            //if(intensity<0){
-                lrDrawTriangle3DTexture(framebuffer, texture, screenCoords, uvs);
-            //}
+            //lrDrawTriangle3DTexture(framebuffer, texture, screenCoords, uvs);
+            lrDrawTriangleShader(framebuffer, screenCoords, shader);
         }
 
-        //window_draw_image(window,image);
         window_draw_buffer(window, framebuffer);
         input_poll_events();
     }

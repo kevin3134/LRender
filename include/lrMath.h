@@ -67,7 +67,7 @@ template <class t> struct vec3_t {
 };
 
 template <class t> std::ostream& operator<<(std::ostream& out, vec3_t<t>& V){
-    out << "vec4: [" << V.x << ", "<<V.y << ", "<<V.z << "]";
+    out << "vec3: [" << V.x << ", "<<V.y << ", "<<V.z << "]";
     return out;
 }
 

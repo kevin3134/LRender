@@ -20,6 +20,7 @@ add_executable(LRender
     src/lrMesh.cpp
     src/lrTexture.cpp
     src/lrCamera.cpp
+    src/lrShader.cpp
     include/lrDisplay.h
     include/lrImage.h
     include/lrMacro.h
@@ -28,6 +29,7 @@ add_executable(LRender
     include/lrMesh.h 
     include/lrTexture.h 
     include/lrCamera.h
+    include/lrShader.h
 )
 
 add_executable(LRenderTest 

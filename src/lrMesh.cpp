@@ -109,10 +109,23 @@ vec3i_t lrMesh::getEBOTexture(int n){
     return EBOTexture;
 }
 
+vec3i_t lrMesh::getEBONorm(int n){
+    std::vector<vec3i_t> currentEBO = getEBO(n);
+    vec3i_t EBONorm;
+    for(int i=0;i<3;i++){
+        EBONorm[i] = currentEBO[i].z;
+    }
+    return EBONorm;
+}
+
 vec2f_t lrMesh::getTextureUV(int n){
     return VBOTexture[n];
 }
 
+vec3f_t lrMesh::getNorm(int n){
+    return VBONorm[n].normalize();
+}
 
-lrMesh lrLoadMesh(const char *filename){return lrMesh(filename);}
+
+
 

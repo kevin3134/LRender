@@ -72,7 +72,7 @@ vec3f_t lrCamera::lrFront(){
     // front = (center - eye).normalize();
     // return center - eye;
     //return center -eye;
-    return eye - center;
+    return (eye - center).normalize();
     //return front;
 }
 
