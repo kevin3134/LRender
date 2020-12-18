@@ -20,9 +20,9 @@ refer about this: https://stackoverrun.com/cn/q/1237360
 ## 矩阵变化和坐标系
 物体坐标系  
 || 模型矩阵  
-世界坐标系
-|| 视图矩阵 
-眼坐标系
+世界坐标系  
+|| 视图矩阵  
+眼坐标系  
 || 投影矩阵  
 剪切坐标系 (-1,1; still 3d coordinate, but we could assume front is the 2d image)  
 || 视角矩阵  
