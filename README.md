@@ -14,7 +14,6 @@ This is a software renderer currently based on windows.
 - [x] 状态机    
 - [ ] 齐次裁剪  
 - [x] 透视插值  
-- [ ] 齐次裁剪  
 - [x] 背面剔除   
 - [x] 深度测试  
 - [ ] 透明混合  
