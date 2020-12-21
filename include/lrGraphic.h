@@ -7,7 +7,6 @@
 #include "lrShader.h"
 
 
-
 typedef struct {
     int width, height;
     vec4f_t *colorBuffer;
@@ -41,6 +40,8 @@ void lrDrawTriangle3D(framebuffer_t *framebuffer, vec3i_t *postion, vec4f_t colo
 
 void lrDrawTriangle3DTexture(framebuffer_t *framebuffer, lrColorTexture *texture, vec3i_t *postion, vec2f_t *textureUV);
 void lrDrawTriangleShader(framebuffer_t *framebuffer, vec3i_t *postion, lrShader *shader, lrStatus *status);
+
+void lrDrawTriangle(framebuffer_t *framebuffer, lrColorTexture *texture, vec3i_t *postion, vec2f_t *textureUV, lrShader *shader, lrStatus *status);
 
 
 static mat4f_t lrViewPort(int x, int y, int w, int h){

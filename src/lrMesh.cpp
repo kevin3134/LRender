@@ -100,6 +100,7 @@ vec3i_t lrMesh::getEBOVetex(int n){
     return EBOVetex;
 }
 
+
 vec3i_t lrMesh::getEBOTexture(int n){
     std::vector<vec3i_t> currentEBO = getEBO(n);
     vec3i_t EBOTexture;

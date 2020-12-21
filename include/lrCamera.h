@@ -40,7 +40,7 @@ class lrCamera{
         vec3f_t lrgetRight(){return right;}
         vec3f_t lrgetUp(){return up;}
 
-        void addDistance() {if(distance<20.0f) distance+=0.1;}
+        void addDistance() {if(distance<100.0f) distance+=0.1;}
         void subDistance() {if(distance>2.0f) distance-=0.1;}
 
         float getDistance(){return distance;}

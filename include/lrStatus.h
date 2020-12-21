@@ -6,8 +6,8 @@
 
 class lrStatus{
     public:
-        int windowWidth;
-        int windowHeight;
+        int windowWidth = 800;
+        int windowHeight = 800;
         lrMesh *mesh;
         lrCamera *camera;
 
@@ -15,7 +15,6 @@ class lrStatus{
         mat4f_t viewPort;
         mat4f_t projection;
         mat4f_t model;
-
 };
 
 

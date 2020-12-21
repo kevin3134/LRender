@@ -23,6 +23,8 @@ class lrMesh{
         vec2f_t getTextureUV(int n);
         vec3f_t getNorm(int n);
 
+        float getScale(){return maxScale;}
+
     private:
         //list of vertices (x,y,z)
         std::vector<vec3f_t> VBOPosition;

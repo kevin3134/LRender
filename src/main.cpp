@@ -70,12 +70,12 @@ void printInfo(float deltaTime, framebuffer_t* framebuffer){
     vec3f_t front = status->camera->lrFront();
     vec3f_t right = status->camera->lrgetRight();
     vec3f_t up = status->camera->lrgetUp();
-    std::cout << "front: " << front << std::endl;
-    std::cout << "eye: " << eye << std::endl;
-    std::cout << "right: " << right << std::endl;
-    std::cout << "up: " << up << std::endl;
-    std::cout << "distance:" << status->camera->getDistance() << std::endl;
-    std::cout << "view matrix: \n" << status->view << std::endl;
+    // std::cout << "front: " << front << std::endl;
+    // std::cout << "eye: " << eye << std::endl;
+    // std::cout << "right: " << right << std::endl;
+    // std::cout << "up: " << up << std::endl;
+    // std::cout << "distance:" << status->camera->getDistance() << std::endl;
+    // std::cout << "view matrix: \n" << status->view << std::endl;
 }
 
 
@@ -104,7 +104,8 @@ int main(){
     input_set_callbacks(window, callbacks);
     prev_time = platform_get_time();
 
-    lrShader *shader = new lrGouraudShader();
+    //lrShader *shader = new lrGouraudShader();
+    lrShader *shader = new lrGeneralShader();
 
     while(!window_should_close(window)){
         float curr_time = platform_get_time();
@@ -115,7 +116,8 @@ int main(){
 
         status->view = status->camera->lrLookAt();
         status->projection =  lrPerspective(TO_RADIANS(30.0f), (float)WINDOW_WIDTH/WINDOW_HEIGHT, 0.1f, 1000.0f);
-        status->viewPort = lrViewPort(200, 200, 300, 300);
+        //status->viewPort = lrViewPort(0, 0, 500, 500);
+        status->viewPort = lrViewPort(200, 200, 200, 200);
 
         //print information when press key_P
         if(PRINT_INFO){
@@ -149,7 +151,8 @@ int main(){
                 uvs[j]=status->mesh->getTextureUV(EBOTesture[j]);
             }
             //lrDrawTriangle3DTexture(framebuffer, texture, screenCoords, uvs);
-            lrDrawTriangleShader(framebuffer, screenCoords, shader, status);
+            //lrDrawTriangleShader(framebuffer, screenCoords, shader, status);
+            lrDrawTriangle(framebuffer, texture, screenCoords, uvs, shader, status);
         }
 
         window_draw_buffer(window, framebuffer);
