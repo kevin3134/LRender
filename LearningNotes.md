@@ -1,7 +1,7 @@
 # Learning Notes
 # 学习笔记
 
-## Matrix transfer and coordinates
+#### Matrix transfer and coordinates
 object coordinates  
 || model  
 world coordinates  
@@ -12,12 +12,12 @@ clip coordinates (-1,1; still 3d coordinate, but we could assume front is the 2d
 || viewport  
 screen coordinates  
 
-## About GLM
+#### About GLM
 View matrix, projection matrix used in this project are mainly from GLM.  
 However, GLM matrix is different from matrix we commonly used, it is transposed.  
 referrence: https://stackoverrun.com/cn/q/1237360  
 
-## 矩阵变化和坐标系
+#### 矩阵变化和坐标系
 物体坐标系  
 || 模型矩阵  
 世界坐标系  
@@ -28,7 +28,7 @@ referrence: https://stackoverrun.com/cn/q/1237360
 || 视角矩阵  
 屏幕坐标系
 
-## 视图矩阵
+#### 视图矩阵
 视图矩阵控制观察的方向和距离（glLookat中相机的位置）  
 对应函数为lrLookAt  
 
@@ -43,7 +43,7 @@ view matrix:
 参考： http://www.songho.ca/opengl/gl_camera.html  
 
 
-## 投影矩阵
+#### 投影矩阵
 
 投影矩阵的远平面和近平面是相对于眼睛，在远平面外的物体是看不到的;
 投影矩阵变换后，结果会在-1,1的一个立方体中
@@ -66,6 +66,6 @@ http://www.songho.ca/opengl/gl_projectionmatrix.html
 http://docs.gl/gl2/glOrtho  
 http://learnwebgl.brown37.net/08_projections/projections_perspective.html  
 
-## 关于GLM
+#### 关于GLM
 视图矩阵和投影矩阵来自GLM库，但是GLM库中的矩阵是和我们认知矩阵转置的  
 参考： https://stackoverrun.com/cn/q/1237360  
