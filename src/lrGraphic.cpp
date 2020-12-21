@@ -212,7 +212,7 @@ void lrDrawTriangle3DTexture(framebuffer_t *framebuffer, lrColorTexture *texture
     } 
 }
 
-void lrDrawTriangleShader(framebuffer_t *framebuffer, vec3i_t *postion, lrShader *shader){
+void lrDrawTriangleShader(framebuffer_t *framebuffer, vec3i_t *postion, lrShader *shader, lrStatus *status){
     vec3i_t v1= *postion;
     vec3i_t v2 = *(postion+1);
     vec3i_t v3 = *(postion+2);
@@ -248,7 +248,7 @@ void lrDrawTriangleShader(framebuffer_t *framebuffer, vec3i_t *postion, lrShader
             //vec4f_t color = texture->lrGetTextureColor(uv);
             vec4f_t color = vec4f_t(0,0,0,1);
 
-            bool discard = shader->fragment(bc_screen,color);
+            bool discard = shader->fragment(bc_screen,color,status);
 
             if(framebuffer->depthBuffer[int(P.x+P.y*width)] > P.z){
                 framebuffer->depthBuffer[int(P.x+P.y*width)] = P.z;

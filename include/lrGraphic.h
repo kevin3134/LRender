@@ -40,7 +40,7 @@ void lrDrawTriangle2D(framebuffer_t *framebuffer, vec2i_t v1, vec2i_t v2, vec2i_
 void lrDrawTriangle3D(framebuffer_t *framebuffer, vec3i_t *postion, vec4f_t color);
 
 void lrDrawTriangle3DTexture(framebuffer_t *framebuffer, lrColorTexture *texture, vec3i_t *postion, vec2f_t *textureUV);
-void lrDrawTriangleShader(framebuffer_t *framebuffer, vec3i_t *postion, lrShader *shader);
+void lrDrawTriangleShader(framebuffer_t *framebuffer, vec3i_t *postion, lrShader *shader, lrStatus *status);
 
 
 static mat4f_t lrViewPort(int x, int y, int w, int h){

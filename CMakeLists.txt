@@ -30,6 +30,7 @@ add_executable(LRender
     include/lrTexture.h 
     include/lrCamera.h
     include/lrShader.h
+    include/lrStatus.h
 )
 
 add_executable(LRenderTest 

@@ -15,7 +15,7 @@ screen coordinates
 ## About GLM
 View matrix, projection matrix used in this project are mainly from GLM.  
 However, GLM matrix is different from matrix we commonly used, it is transposed.  
-refer about this: https://stackoverrun.com/cn/q/1237360  
+referrence: https://stackoverrun.com/cn/q/1237360  
 
 ## 矩阵变化和坐标系
 物体坐标系  
@@ -62,9 +62,9 @@ projection matrix:
 
  
 参考： 
-http://www.songho.ca/opengl/gl_projectionmatrix.html
-http://docs.gl/gl2/glOrtho
-http://learnwebgl.brown37.net/08_projections/projections_perspective.html
+http://www.songho.ca/opengl/gl_projectionmatrix.html  
+http://docs.gl/gl2/glOrtho  
+http://learnwebgl.brown37.net/08_projections/projections_perspective.html  
 
 ## 关于GLM
 视图矩阵和投影矩阵来自GLM库，但是GLM库中的矩阵是和我们认知矩阵转置的  
