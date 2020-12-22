@@ -93,8 +93,12 @@ int main(){
     // status->mesh= new lrMesh("../resource/witch/witch.obj");    
     // image_t * image = lrLoadTGAImage("../resource/witch/witch_diffuse.tga");
 
-    status->mesh = new lrMesh("../resource/obj/african_head.obj");
-    image_t * image = lrLoadTGAImage("../resource/obj/african_head_diffuse.tga");
+    // status->mesh = new lrMesh("../resource/obj/african_head.obj");
+    // image_t * image = lrLoadTGAImage("../resource/obj/african_head_diffuse.tga");
+
+    status->mesh = new lrMesh("../resource/crab/crab.obj");
+    image_t * image = lrLoadTGAImage("../resource/crab/crab_diffuse.tga");
+
 
     lrColorTexture *texture = new lrColorTexture(image);
 
@@ -106,6 +110,7 @@ int main(){
 
     //lrShader *shader = new lrGouraudShader();
     lrShader *shader = new lrGeneralShader();
+    //lrShader *shader = new lrPhongShader();
 
     while(!window_should_close(window)){
         float curr_time = platform_get_time();
@@ -118,6 +123,10 @@ int main(){
         status->projection =  lrPerspective(TO_RADIANS(30.0f), (float)WINDOW_WIDTH/WINDOW_HEIGHT, 0.1f, 100.0f);
         //status->viewPort = lrViewPort(0, 0, 500, 500);
         status->viewPort = lrViewPort(200, 200, 200, 200);
+
+
+        //current only used in phong
+        shader->update(status);
 
         //print information when press key_P
         if(PRINT_INFO){
@@ -149,6 +158,10 @@ int main(){
                 screenCoords[j]=vec3i_t(x,y,z);
 
                 uvs[j]=status->mesh->getTextureUV(EBOTesture[j]);
+            }
+
+            for(int i=0;i<3;i++){
+                shader->uvs[i] = uvs[i];
             }
             //lrDrawTriangle3DTexture(framebuffer, texture, screenCoords, uvs);
             //lrDrawTriangleShader(framebuffer, screenCoords, shader, status);
