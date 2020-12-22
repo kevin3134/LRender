@@ -115,7 +115,7 @@ int main(){
         status->camera->cameraMove(currentMove);
 
         status->view = status->camera->lrLookAt();
-        status->projection =  lrPerspective(TO_RADIANS(30.0f), (float)WINDOW_WIDTH/WINDOW_HEIGHT, 0.1f, 1000.0f);
+        status->projection =  lrPerspective(TO_RADIANS(30.0f), (float)WINDOW_WIDTH/WINDOW_HEIGHT, 0.1f, 100.0f);
         //status->viewPort = lrViewPort(0, 0, 500, 500);
         status->viewPort = lrViewPort(200, 200, 200, 200);
 

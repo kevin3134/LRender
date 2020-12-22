@@ -60,14 +60,6 @@ static mat4f_t lrViewPort(int x, int y, int w, int h){
     return m;
 }
 
-static vec3i_t lrViewPort2(int w, int h, vec3f_t V){
-    int x = (V.x+1) *0.5f * w;
-    int y = (V.y+1) *0.5f * h;
-    int z = (V.z+1) *0.5f;
-
-    return vec3i_t(x,y,z);
-}
-
 
 static mat4f_t lrPerspective(float fovy, float aspect, float near, float far){
     mat4f_t m;

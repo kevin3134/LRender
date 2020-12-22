@@ -52,11 +52,27 @@ void lrMathMatMulVec4(){
     std::cout << vec3 <<std::endl;
 }
 
+void lrMathMatInverse(){
+
+    mat4f_t mat1(1,2,3,4,5,1,7,8,9,8,1,6,5,4,3,1);
+    //mat4f_t mat2(1,2,3,4,0,1,4,6,5,6,0,7,0,0,0,1);
+
+
+    std::cout << mat1 <<std::endl;
+
+    // mat4f_t a = mat1.transpose();
+    // std::cout << a <<std::endl;
+    mat4f_t invtra = mat1.inverse_transpose();
+    std::cout << invtra <<std::endl;
+    // mat4f_t adj = mat1.adjoint();
+    // std::cout << adj <<std::endl;
+}
+
 
 
 int main(){
 
-    lrMathMatMulVec4();
+    lrMathMatInverse();
 
     return 0;
 }

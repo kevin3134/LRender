@@ -216,7 +216,7 @@ struct mat4f_t{
         float x2, float y2, float z2, float w2,
         float x3, float y3, float z3, float w3,
         float x4, float y4, float z4, float w4){
-        init(vec4f_t(x1,y1,z1,w1),vec4f_t(x1,y1,z1,w1),vec4f_t(x3,y3,z3,w3),vec4f_t(x4,y4,z4,w4));
+        init(vec4f_t(x1,y1,z1,w1),vec4f_t(x2,y2,z2,w2),vec4f_t(x3,y3,z3,w3),vec4f_t(x4,y4,z4,w4));
         }
     mat4f_t(){
         init(vec4f_t(1,0,0,0),vec4f_t(0,1,0,0),vec4f_t(0,0,1,0),vec4f_t(0,0,0,1));
@@ -266,6 +266,13 @@ struct mat4f_t{
         out << "|" << mat.m[3][0] << ", "<<mat.m[3][1] << ", "<<mat.m[3][2] << ", "<<mat.m[3][3] << "|\n";
         return out;
     }
+
+    float minor(int r, int c);
+    float cofactor(int r, int c);
+    mat4f_t adjoint();
+    mat4f_t inverse();
+    mat4f_t transpose();
+    mat4f_t inverse_transpose();
 
 };
 

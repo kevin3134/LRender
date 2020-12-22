@@ -42,7 +42,7 @@ class lrGeneralShader : public lrShader {
 
             //auto scale
             gl_Vertex = gl_Vertex * (2.0f/status->mesh->getScale());
-            gl_Vertex.w = 1;
+            gl_Vertex.w = 1.0f;
 
             return status->viewPort * status->projection * status->view * status->model * gl_Vertex;
         }
@@ -50,6 +50,29 @@ class lrGeneralShader : public lrShader {
         virtual bool fragment(vec3f_t bar, vec4f_t &color, lrStatus *status){
             return false;
         }
+};
+
+
+//generate image with texture
+class lrPhongShader : public lrShader {
+    public:
+        virtual ~lrPhongShader(){};
+        virtual vec4f_t vertex(int EBO, int nthvert, lrStatus *status){
+            vec4f_t gl_Vertex = vec4f_t(status->mesh->getVBOPostion(status->mesh->getEBOVetex(EBO)[nthvert]),1);
+
+            //auto scale
+            gl_Vertex = gl_Vertex * (2.0f/status->mesh->getScale());
+            gl_Vertex.w = 1.0f;
+
+            return status->viewPort * status->projection * status->view * status->model * gl_Vertex;
+        }
+
+        virtual bool fragment(vec3f_t bar, vec4f_t &color, lrStatus *status){
+            return false;
+        }
+    private:
+        mat4f_t uniform_M; //mvp
+        mat4f_t uniform_MIT; //(mvp).invert_transpose()
 };
 
 #endif
