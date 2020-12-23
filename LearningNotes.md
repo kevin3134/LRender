@@ -66,6 +66,19 @@ http://www.songho.ca/opengl/gl_projectionmatrix.html
 http://docs.gl/gl2/glOrtho  
 http://learnwebgl.brown37.net/08_projections/projections_perspective.html  
 
+
+#### 关于法线贴图  
+对于rgb的法线贴图（tinyrender中的做法有些confused）  
+我当前的处理方式是，直接用读取后的法线方向和光照方向计算diffuse intensity  
+（rgb彩色贴图在旋转后就失效了，所以使用多个这类法线贴图时，对其中一个旋转会导致错误）  
+
+对于切向空间法线贴图
+理解是要将光照方向做一个旋转，这部分参考opengl里面shader的操作  
+
+https://learnopengl-cn.github.io/05%20Advanced%20Lighting/04%20Normal%20Mapping/  
+
+
+
 #### 关于GLM
 视图矩阵和投影矩阵来自GLM库，但是GLM库中的矩阵是和我们认知矩阵转置的  
 参考： https://stackoverrun.com/cn/q/1237360  

@@ -105,6 +105,8 @@ template <class t> struct vec4_t {
         else{throw "incorrect index input in vec4!";}
     }
     template <class> friend std::ostream& operator<<(std::ostream& out, vec4_t<t>& V);
+    float norm () const { return std::sqrt(x*x+y*y+z*z+w*w); }
+    vec4_t<t> & normalize(t l=1) { *this = (*this)*(l/norm()); return *this; }
 
 };
 

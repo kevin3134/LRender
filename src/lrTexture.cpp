@@ -16,7 +16,7 @@ lrTexture::lrTexture(image_t *image){
     for(int i=0;i<buffer_size;i++){
         buffer[i] = image->buffer[i];
     }
-    std::cout << channels <<std::endl;
+    std::cout << "texture channel:" << channels <<std::endl;
 }
 
 lrTexture::~lrTexture(){
@@ -31,6 +31,13 @@ int lrTexture::lrGetTextureIndex(vec2f_t uv){
 
     return index;
 }
+
+vec4f_t lrTexture::lrGetTextureValue(vec2f_t uv){
+    return vec4f_t();
+}
+
+
+
 
 
 lrColorTexture::lrColorTexture(image_t *image) : lrTexture(image) {
@@ -51,8 +58,47 @@ vec4f_t lrColorTexture::lrGetTextureColor(vec2f_t uv){
     return vec4f_t(red,green,blue,alpha);
 }
 
+vec4f_t lrColorTexture::lrGetTextureValue(vec2f_t uv){
+    return lrGetTextureColor(uv);
+}
+
 
 
 lrColorTexture::~lrColorTexture(){
+    free(buffer);
+}
+
+
+
+
+lrNormTexture::lrNormTexture(image_t *image) : lrTexture(image) {
+    //TODO: assert channel is 3 or 4
+}
+
+
+vec4f_t lrNormTexture::lrGetTextureNorm(vec2f_t uv){
+    int index = lrGetTextureIndex(uv);
+    float blue =buffer[index]/255.0f * 2.0f -1.0f;
+    float green =buffer[index+1]/255.0f * 2.0f -1.0f;
+    float red =buffer[index+2]/255.0f * 2.0f -1.0f;
+    // float blue =buffer[index]/255.0f;
+    // float green =buffer[index+1]/255.0f;
+    // float red =buffer[index+2]/255.0f;
+    float alpha = 0;
+
+    if(channels==4){
+        alpha = buffer[index+3]/255.0f;
+    }
+    return vec4f_t(red,green,blue,alpha);
+    //return vec4f_t(blue,green,red,alpha);
+}
+
+vec4f_t lrNormTexture::lrGetTextureValue(vec2f_t uv){
+    return lrGetTextureNorm(uv);
+}
+
+
+
+lrNormTexture::~lrNormTexture(){
     free(buffer);
 }

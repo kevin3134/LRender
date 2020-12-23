@@ -167,7 +167,7 @@ void lrDrawTriangle3D(framebuffer_t *framebuffer, vec3i_t *postion, vec4f_t colo
     } 
 }
 
-void lrDrawTriangle3DTexture(framebuffer_t *framebuffer, lrColorTexture *texture, vec3i_t *postion, vec2f_t *textureUV){
+void lrDrawTriangle3DTexture(framebuffer_t *framebuffer, lrTexture *texture, vec3i_t *postion, vec2f_t *textureUV){
     vec3i_t v1= *postion;
     vec3i_t v2 = *(postion+1);
     vec3i_t v3 = *(postion+2);
@@ -200,7 +200,7 @@ void lrDrawTriangle3DTexture(framebuffer_t *framebuffer, lrColorTexture *texture
 
             vec2f_t uv = textureUV[0]*bc_screen[0] + textureUV[1]*bc_screen[1] + textureUV[2]*bc_screen[2];
 
-            vec4f_t color = texture->lrGetTextureColor(uv);
+            vec4f_t color = texture->lrGetTextureValue(uv);
 
 
             if(framebuffer->depthBuffer[int(P.x+P.y*width)] > P.z){
@@ -245,7 +245,7 @@ void lrDrawTriangleShader(framebuffer_t *framebuffer, vec3i_t *postion, lrShader
 
             //vec2f_t uv = textureUV[0]*bc_screen[0] + textureUV[1]*bc_screen[1] + textureUV[2]*bc_screen[2];
 
-            //vec4f_t color = texture->lrGetTextureColor(uv);
+            //vec4f_t color = texture->lrGetTextureValue(uv);
             vec4f_t color = vec4f_t(0,0,0,1);
 
             bool discard = shader->fragment(bc_screen,color,status);
@@ -259,7 +259,7 @@ void lrDrawTriangleShader(framebuffer_t *framebuffer, vec3i_t *postion, lrShader
 }
 
 
-void lrDrawTriangle(framebuffer_t *framebuffer, lrColorTexture *texture, vec3i_t *postion, vec2f_t *textureUV, lrShader *shader, lrStatus *status){
+void lrDrawTriangle(framebuffer_t *framebuffer, vec3i_t *postion, lrShader *shader, lrStatus *status){
     vec3i_t v1= *postion;
     vec3i_t v2 = *(postion+1);
     vec3i_t v3 = *(postion+2);
@@ -290,9 +290,9 @@ void lrDrawTriangle(framebuffer_t *framebuffer, lrColorTexture *texture, vec3i_t
 
             P.z = v1[2]*bc_screen[0] + v2[2]*bc_screen[1] + v3[2]*bc_screen[2];
 
-            vec2f_t uv = textureUV[0]*bc_screen[0] + textureUV[1]*bc_screen[1] + textureUV[2]*bc_screen[2];
+            //vec2f_t uv = textureUV[0]*bc_screen[0] + textureUV[1]*bc_screen[1] + textureUV[2]*bc_screen[2];
 
-            vec4f_t color = texture->lrGetTextureColor(uv);
+            vec4f_t color = vec4f_t();
 
             bool discard = shader->fragment(bc_screen,color,status);
 

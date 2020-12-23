@@ -35,7 +35,6 @@ CameraMovement currentMove = CameraMovement::STOP;
 
 lrStatus *status = new lrStatus();
 
-
 static void key_callback(window_t *window, keycode_t key, int pressed) {
     //std::cout << "press key: " << key << " pressed: " << pressed << std::endl;
     if(pressed==0) return;
@@ -93,14 +92,20 @@ int main(){
     // status->mesh= new lrMesh("../resource/witch/witch.obj");    
     // image_t * image = lrLoadTGAImage("../resource/witch/witch_diffuse.tga");
 
-    // status->mesh = new lrMesh("../resource/obj/african_head.obj");
-    // image_t * image = lrLoadTGAImage("../resource/obj/african_head_diffuse.tga");
+    status->mesh = new lrMesh("../resource/obj/african_head.obj");
+    image_t * imageDiff = lrLoadTGAImage("../resource/obj/african_head_diffuse.tga");
+    image_t * imageNorm = lrLoadTGAImage("../resource/obj/african_head_nm.tga");
+    image_t * imageSpec = lrLoadTGAImage("../resource/obj/african_head_spec.tga");
 
-    status->mesh = new lrMesh("../resource/crab/crab.obj");
-    image_t * image = lrLoadTGAImage("../resource/crab/crab_diffuse.tga");
+    // status->mesh = new lrMesh("../resource/crab/crab.obj");
+    // image_t * imageDiff = lrLoadTGAImage("../resource/crab/crab_diffuse.tga");
+    // image_t * imageNorm = lrLoadTGAImage("../resource/crab/crab_normal.tga");
+    // image_t * imageSpec = lrLoadTGAImage("../resource/crab/crab_specular.tga");
 
 
-    lrColorTexture *texture = new lrColorTexture(image);
+    status->texture0 = new lrColorTexture(imageDiff);
+    status->texture1 = new lrNormTexture(imageNorm);
+    status->texture2 = new lrColorTexture(imageSpec);
 
     status->camera = new lrCamera();
     status->camera->setEye(vec3f_t(0,0,0));
@@ -109,8 +114,8 @@ int main(){
     prev_time = platform_get_time();
 
     //lrShader *shader = new lrGouraudShader();
-    lrShader *shader = new lrGeneralShader();
-    //lrShader *shader = new lrPhongShader();
+    //lrShader *shader = new lrGeneralShader();
+    lrShader *shader = new lrPhongShader();
 
     while(!window_should_close(window)){
         float curr_time = platform_get_time();
@@ -145,7 +150,6 @@ int main(){
             vec3i_t EBOVetex = status->mesh->getEBOVetex(i);
             vec3i_t EBOTesture = status->mesh->getEBOTexture(i);
             vec3i_t screenCoords[3];
-            vec2f_t uvs[3];
 
 
             for(int j=0;j<3;j++){
@@ -156,24 +160,27 @@ int main(){
                 int z = screenCoords4D.z/screenCoords4D.w;
 
                 screenCoords[j]=vec3i_t(x,y,z);
-
-                uvs[j]=status->mesh->getTextureUV(EBOTesture[j]);
             }
 
-            for(int i=0;i<3;i++){
-                shader->uvs[i] = uvs[i];
-            }
-            //lrDrawTriangle3DTexture(framebuffer, texture, screenCoords, uvs);
+            //lrDrawTriangle3DTexture(framebuffer, status->texture0, screenCoords, uvs);
             //lrDrawTriangleShader(framebuffer, screenCoords, shader, status);
-            lrDrawTriangle(framebuffer, texture, screenCoords, uvs, shader, status);
+            lrDrawTriangle(framebuffer, screenCoords, shader, status);
         }
 
         window_draw_buffer(window, framebuffer);
         input_poll_events();
     }
+
+    // vec4f_t a = status->texture1->lrGetTextureValue(vec2f_t(0.5,0.5));
+    // std::cout<< a << std::endl;
+
+
     window_destroy(window);
-    lrReleaseImage(image);
+    lrReleaseImage(imageDiff);
+    lrReleaseImage(imageNorm);
+    lrReleaseImage(imageSpec);
     lrReleaseFramebuffer(framebuffer);
+
 
     return 0;
 }
