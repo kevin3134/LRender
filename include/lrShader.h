@@ -87,40 +87,38 @@ class lrPhongShader : public lrShader {
 
         virtual bool fragment(vec3f_t bar, vec4f_t &color, lrStatus *status){
             vec2f_t uv = uvs[0]*bar[0]+uvs[1]*bar[1]+uvs[2]*bar[2];
-            vec4f_t color0 = status->texture0->lrGetTextureValue(uv);
+            vec4f_t textureColor = status->texture0->lrGetTextureValue(uv);
 
-            //vec4f_t nTemp = status->texture1->lrGetTextureValue(uv);
-            vec4f_t temp = (status->texture1->lrGetTextureValue(uv));
-            temp.w = 0;
-            temp = temp.normalize();
+            vec4f_t n4 = (status->texture1->lrGetTextureValue(uv));
+            n4.w = 0;
+            vec3f_t n = vec3f_t(n4.x, n4.y, n4.z).normalize();
 
+            vec3f_t l = (status->lightDir).normalize();
+            vec3f_t r = (n*(n*l*2.f) - l).normalize(); 
+
+
+            float diff = std::max(0.f, n*l);
+            vec4f_t s4 = (status->texture2->lrGetTextureValue(uv));
             
-            vec3f_t n = vec3f_t(temp.x, temp.y, temp.z).normalize();
-        
-            
-            vec3f_t front = (status->camera)->lrFront();
+            //用以下表示显示为角度高光
+            // https://learnopengl.com/code_viewer.php?code=advanced-lighting/normal_mapping&type=fragment
+            //front is already normalized
+            // vec3f_t front = status->camera->lrFront();
+            // vec3f_t halfway = (front+r).normalize();
+            // float spec = pow(std::max(halfway*n, 0.0f), s4.x);
 
-            // vec4f_t l4 = uniform_M * vec4f_t(front.x,front.y,front.z,1);
-            // vec3f_t l = vec3f_t(l4.x, l4.y, l4.z).normalize();
+            //用以下显示为根据位置的高光 （来自tinyrender）
+            // https://github.com/ssloy/tinyrenderer/wiki/Lesson-6-Shaders-for-the-software-renderer
+            //float spec = pow(std::max(r.z, 0.0f), s4.x);
 
-            //vec3f_t l = front;
-            vec3f_t l = vec3f_t(1,0,0);
-
-            // vec3f_t r = (n*(n*l*2.f) - l).normalize(); 
-
-            // float diff = std::max(0.f, n*l);
-
-            float intensity = n*l;
-            
-            intensity = lrMax(0.0f,intensity);
-
-            //std::cout<< intensity << std::endl;
+            // 用光照和视角夹角算，似乎效果最佳
+            //https://github.com/jorgonz/OpenGL_Diffuse-Specular_Maps_Example/blob/master/Example_Scene_Light/shaders/fShader.fs
+            vec3f_t front = status->camera->lrFront();
+            float spec = pow(std::max(r*front, 0.0f), s4.x);
 
             for(int i=0;i<3;i++){
-                //color[i] = color0[i]*0.8*diff+0.05;
-                color[i] = intensity;
+                color[i] = lrMin( (float)(textureColor[i]*(0.8*diff+0.8*spec)+0.05) , 0.9999f);
             }
-
             return false;
         }
     private:

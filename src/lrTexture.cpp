@@ -102,3 +102,24 @@ vec4f_t lrNormTexture::lrGetTextureValue(vec2f_t uv){
 lrNormTexture::~lrNormTexture(){
     free(buffer);
 }
+
+lrSpecTexture::lrSpecTexture(image_t *image) : lrTexture(image) {
+    //TODO: assert channel is 1
+}
+
+
+vec4f_t lrSpecTexture::lrGetTextureSpec(vec2f_t uv){
+    int index = lrGetTextureIndex(uv);
+    //std::cout << (int)buffer[index] << std::endl;
+    //float result =buffer[index]/255.0f * 2.0f -1.0f;
+    float result =buffer[index];
+    return vec4f_t(result,0,0,0);
+}
+
+vec4f_t lrSpecTexture::lrGetTextureValue(vec2f_t uv){
+    return lrGetTextureSpec(uv);
+}
+
+lrSpecTexture::~lrSpecTexture(){
+    free(buffer);
+}

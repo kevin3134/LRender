@@ -105,7 +105,7 @@ int main(){
 
     status->texture0 = new lrColorTexture(imageDiff);
     status->texture1 = new lrNormTexture(imageNorm);
-    status->texture2 = new lrColorTexture(imageSpec);
+    status->texture2 = new lrSpecTexture(imageSpec);
 
     status->camera = new lrCamera();
     status->camera->setEye(vec3f_t(0,0,0));
@@ -170,10 +170,6 @@ int main(){
         window_draw_buffer(window, framebuffer);
         input_poll_events();
     }
-
-    // vec4f_t a = status->texture1->lrGetTextureValue(vec2f_t(0.5,0.5));
-    // std::cout<< a << std::endl;
-
 
     window_destroy(window);
     lrReleaseImage(imageDiff);

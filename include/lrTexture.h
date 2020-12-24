@@ -46,5 +46,16 @@ class lrNormTexture : public lrTexture{
 
 };
 
+//channels should be 1
+class lrSpecTexture : public lrTexture{
+    public:
+        lrSpecTexture(image_t *image);
+        ~lrSpecTexture();
+
+        vec4f_t lrGetTextureSpec(vec2f_t uv);
+        virtual vec4f_t lrGetTextureValue(vec2f_t uv);
+
+};
+
 
 #endif

@@ -69,20 +69,10 @@ mat4f_t lrCamera::lrLookAt(){
 }
 
 vec3f_t lrCamera::lrFront(){
-    // front = (center - eye).normalize();
-    // return center - eye;
-    //return center -eye;
     return (eye - center).normalize();
-    //return front;
 }
 
 
-
-// void lrCamera::updateCameraVectors(){
-//     front = (center - eye).normalize();
-//     right = (front^worldUp).normalize();
-//     up = (right^front).normalize();
-// }
 
 void lrCamera::updateCameraVectors(){
     front = (eye - center).normalize();
@@ -90,9 +80,4 @@ void lrCamera::updateCameraVectors(){
     up = (front^right);
 }
 
-// void lrCamera::updateCameraVectors(){
-//     front = (center - eye).normalize();
-//     right = (worldUp^front).normalize();
-//     up = (front^right).normalize();
-// }
 

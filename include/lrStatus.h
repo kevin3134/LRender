@@ -18,6 +18,7 @@ class lrStatus{
         lrTexture *texture3;
 
 
+        vec3f_t lightDir = vec3f_t(1,1,1);
         mat4f_t view;
         mat4f_t viewPort;
         mat4f_t projection;

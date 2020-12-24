@@ -19,13 +19,13 @@ This is a software renderer currently based on windows.
 - [ ] 透明混合  
 - [ ] 天空盒  
 - [ ] 骨骼动画  
-- [ ] 切线空间  
-- [ ] 法线贴图  
+- [x] 法线贴图  
+- [ ] 切线空间法线贴图  
 - [ ] 阴影贴图  
-- [ ] Blinn-Phong  
+- [x] Blinn-Phong  
 - [ ] PBR  
 - [ ] 环境光照  
-- [ ] 材质查看器
+- [ ] 材质查看器  
 - [ ] MSAA
 
 
