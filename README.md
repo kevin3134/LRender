@@ -20,7 +20,7 @@ This is a software renderer currently based on windows.
 - [ ] 天空盒  
 - [ ] 骨骼动画  
 - [x] 法线贴图  
-- [ ] 切线空间法线贴图  
+- [x] 切线空间法线贴图  
 - [ ] 阴影贴图  
 - [x] Blinn-Phong  
 - [ ] PBR  

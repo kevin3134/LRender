@@ -92,20 +92,24 @@ int main(){
     // status->mesh= new lrMesh("../resource/witch/witch.obj");    
     // image_t * image = lrLoadTGAImage("../resource/witch/witch_diffuse.tga");
 
-    status->mesh = new lrMesh("../resource/obj/african_head.obj");
-    image_t * imageDiff = lrLoadTGAImage("../resource/obj/african_head_diffuse.tga");
-    image_t * imageNorm = lrLoadTGAImage("../resource/obj/african_head_nm.tga");
-    image_t * imageSpec = lrLoadTGAImage("../resource/obj/african_head_spec.tga");
+    // status->mesh = new lrMesh("../resource/obj/african_head.obj");
+    // image_t * imageDiff = lrLoadTGAImage("../resource/obj/african_head_diffuse.tga");
+    // image_t * imageNorm = lrLoadTGAImage("../resource/obj/african_head_nm.tga");
+    // image_t * imageSpec = lrLoadTGAImage("../resource/obj/african_head_spec.tga");
+    // image_t * imageNormTang = lrLoadTGAImage("../resource/obj/african_head_nm_tangent.tga");
 
-    // status->mesh = new lrMesh("../resource/crab/crab.obj");
-    // image_t * imageDiff = lrLoadTGAImage("../resource/crab/crab_diffuse.tga");
-    // image_t * imageNorm = lrLoadTGAImage("../resource/crab/crab_normal.tga");
-    // image_t * imageSpec = lrLoadTGAImage("../resource/crab/crab_specular.tga");
+
+    status->mesh = new lrMesh("../resource/crab/crab.obj");
+    image_t * imageDiff = lrLoadTGAImage("../resource/crab/crab_diffuse.tga");
+    image_t * imageNormTang = lrLoadTGAImage("../resource/crab/crab_normal.tga");
+    image_t * imageSpec = lrLoadTGAImage("../resource/crab/crab_specular.tga");
 
 
     status->texture0 = new lrColorTexture(imageDiff);
-    status->texture1 = new lrNormTexture(imageNorm);
+    //status->texture1 = new lrNormTexture(imageNorm);
     status->texture2 = new lrSpecTexture(imageSpec);
+    status->texture3 = new lrNormTexture(imageNormTang);
+
 
     status->camera = new lrCamera();
     status->camera->setEye(vec3f_t(0,0,0));
@@ -115,7 +119,8 @@ int main(){
 
     //lrShader *shader = new lrGouraudShader();
     //lrShader *shader = new lrGeneralShader();
-    lrShader *shader = new lrPhongShader();
+    //lrShader *shader = new lrPhongShader();
+    lrShader *shader = new lrPhongTangentShader();
 
     while(!window_should_close(window)){
         float curr_time = platform_get_time();
@@ -173,7 +178,7 @@ int main(){
 
     window_destroy(window);
     lrReleaseImage(imageDiff);
-    lrReleaseImage(imageNorm);
+    //lrReleaseImage(imageNorm);
     lrReleaseImage(imageSpec);
     lrReleaseFramebuffer(framebuffer);
 

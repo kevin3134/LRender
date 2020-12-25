@@ -97,6 +97,65 @@ static float mat3_determinant(mat4f_t m) {
     return a + b + c;
 }
 
+
+float mat3f_t::determinant(){
+    float a = 0 + m[0][0] * (m[1][1] * m[2][2] - m[1][2] * m[2][1]);
+    float b = 0 - m[0][1] * (m[1][0] * m[2][2] - m[1][2] * m[2][0]);
+    float c = 0 + m[0][2] * (m[1][0] * m[2][1] - m[1][1] * m[2][0]);
+    return a + b + c;
+}
+
+mat3f_t mat3f_t::adjoint(){
+    mat3f_t adjoint;
+    adjoint[0][0] = +(m[1][1] * m[2][2] - m[2][1] * m[1][2]);
+    adjoint[0][1] = -(m[1][0] * m[2][2] - m[2][0] * m[1][2]);
+    adjoint[0][2] = +(m[1][0] * m[2][1] - m[2][0] * m[1][1]);
+    adjoint[1][0] = -(m[0][1] * m[2][2] - m[2][1] * m[0][2]);
+    adjoint[1][1] = +(m[0][0] * m[2][2] - m[2][0] * m[0][2]);
+    adjoint[1][2] = -(m[0][0] * m[2][1] - m[2][0] * m[0][1]);
+    adjoint[2][0] = +(m[0][1] * m[1][2] - m[1][1] * m[0][2]);
+    adjoint[2][1] = -(m[0][0] * m[1][2] - m[1][0] * m[0][2]);
+    adjoint[2][2] = +(m[0][0] * m[1][1] - m[1][0] * m[0][1]);
+    return adjoint;
+}
+
+mat3f_t mat3f_t::inverse(){
+    return (this->inverse_transpose()).transpose();
+}
+
+mat3f_t mat3f_t::transpose() {
+    mat3f_t transpose;
+    int i, j;
+    for (i = 0; i < 3; i++) {
+        for (j = 0; j < 3; j++) {
+            transpose.m[i][j] = m[j][i];
+        }
+    }
+    return transpose;
+}
+
+mat3f_t mat3f_t::inverse_transpose() {
+    mat3f_t adjoint, inverse_transpose;
+    float determinant, inv_determinant;
+    int i, j;
+
+    adjoint = this->adjoint();
+    determinant = this->determinant();
+    inv_determinant = 1 / determinant;
+    for (i = 0; i < 3; i++) {
+        for (j = 0; j < 3; j++) {
+            inverse_transpose[i][j] = adjoint[i][j] * inv_determinant;
+        }
+    }
+    return inverse_transpose;
+}
+
+
+
+
+
+
+
 float mat4f_t::minor(int r, int c) {
     mat4f_t cut_down;
     int i, j;

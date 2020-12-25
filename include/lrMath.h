@@ -60,6 +60,9 @@ template <class t> struct vec3_t {
     float norm () const { return std::sqrt(x*x+y*y+z*z); }
 	vec3_t<t> & normalize(t l=1) { *this = (*this)*(l/norm()); return *this; }
 
+    bool operator==(vec3_t<t> V){ return x==V.x&&y==V.y&&z==V.z; }
+    bool operator!=(vec3_t<t> V){ return x!=V.x||y!=V.y||z!=V.z; }
+
 
 
     template <class> friend std::ostream& operator<<(std::ostream& out, vec3_t<t>& V);
@@ -200,7 +203,76 @@ static float mat3f_determinant(mat3f_t m);
 static mat3f_t mat3f_adjoint(mat3f_t m);
 mat3f_t mat3f_inverse_transpose(mat3f_t m);
 */
+struct mat3f_t{
+    vec3f_t m[3];
+    void init(vec3f_t row0, vec3f_t row1, vec3f_t row2){
+        m[0]=row0;
+        m[1]=row1;
+        m[2]=row2;
+    }
 
+    mat3f_t(float x1, float y1, float z1,
+        float x2, float y2, float z2,
+        float x3, float y3, float z3){
+        init( vec3f_t(x1,y1,z1) , vec3f_t(x2,y2,z2) , vec3f_t(x3,y3,z3) );
+    }
+    mat3f_t(){
+        init(vec3f_t(1,0,0),vec3f_t(0,1,0),vec3f_t(0,0,1));
+    }
+    mat3f_t(vec3f_t row0, vec3f_t row1, vec3f_t row2){
+        init(row0,row1,row2);
+    }
+
+    mat3f_t operator *(float f)     const { return mat3f_t(m[0]*f,m[1]*f,m[2]*f); }
+    vec3f_t operator *(vec3f_t V)   const { return vec3f_t(m[0]*V,m[1]*V,m[2]*V); }
+    mat3f_t operator *(mat3f_t V)   const {
+        mat3f_t retMat;
+        for(int row=0;row<3;row++){
+            for(int col=0;col<3;col++){
+                retMat[row][col] = m[row]*vec3f_t(V.m[0][col], V.m[1][col], V.m[2][col]);
+            }
+        }
+        return retMat; 
+    }
+    vec3f_t& operator[](const int i) {
+        if(i<=2){return m[i];}
+        else{throw "incorrect index input in mat3!";}
+    }
+    bool operator== (mat3f_t M)  const {
+        for(int i=0;i<3;i++){
+            if(M[i]!=m[i]){
+                return false;
+            } 
+        }
+        return true;
+    }
+
+    bool operator!= (mat3f_t M)  const {
+        for(int i=0;i<3;i++){
+            if(M[i]==m[i]){
+                return false;
+            } 
+        }
+        return true;
+    }
+
+
+    friend std::ostream& operator<<(std::ostream& out, mat3f_t& mat){
+        out << "|" << mat.m[0][0] << ", "<<mat.m[0][1] << ", "<<mat.m[0][2] << "|\n";
+        out << "|" << mat.m[1][0] << ", "<<mat.m[1][1] << ", "<<mat.m[1][2] << "|\n";
+        out << "|" << mat.m[2][0] << ", "<<mat.m[2][1] << ", "<<mat.m[2][2] << "|\n";
+        return out;
+    }
+
+    // float minor(int r, int c);
+    // float cofactor(int r, int c);
+    float determinant();
+
+    mat3f_t adjoint();
+    mat3f_t inverse();
+    mat3f_t transpose();
+    mat3f_t inverse_transpose();
+};
 
 //TODO: mat4f_t functions
 struct mat4f_t{
@@ -271,6 +343,7 @@ struct mat4f_t{
 
     float minor(int r, int c);
     float cofactor(int r, int c);
+
     mat4f_t adjoint();
     mat4f_t inverse();
     mat4f_t transpose();
