@@ -68,12 +68,13 @@ http://learnwebgl.brown37.net/08_projections/projections_perspective.html
 
 
 #### 关于法线贴图  
-对于rgb的法线贴图（tinyrender中的做法有些confused）  
-我当前的处理方式是，直接用读取后的法线方向和光照方向计算diffuse intensity  
-（rgb彩色贴图在旋转后就失效了，所以使用多个这类法线贴图时，对其中一个旋转会导致错误）  
+对于rgb的直接法线贴图（tinyrender中做法似乎存在问题）
+直接用读取后的法线方向和光照方向计算diff漫反射常数  
+（rgb彩色贴图在旋转后就失效了，所以使用这类法线贴图时，对物体旋转会导致错误）  
 
-对于切向空间法线贴图
-理解是要将光照方向做一个旋转，这部分参考opengl里面shader的操作  
+对于切向空间法线贴图（可以避免选择的问题）
+切向空间读取出的不是绝对法向量，是一种扰动，需要配合三角形的法线方向； 
+计算时对读取的向量进行切向空间转世界坐标的矩阵转换。 
 
 https://learnopengl-cn.github.io/05%20Advanced%20Lighting/04%20Normal%20Mapping/  
 
