@@ -2,6 +2,9 @@
 This is a software renderer currently based on windows.  
 当前为支持window平台的软渲染器。  
 
+![crab example](https://github.com/kevin3134/LRender/blob/main/resource/displayResource/output.gif)
+
+
 当前功能：  
 
 
