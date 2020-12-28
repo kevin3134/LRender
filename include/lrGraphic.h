@@ -41,7 +41,7 @@ void lrDrawTriangle(framebuffer_t *framebuffer, vec3i_t *postion, lrShader *shad
 
 
 static mat4f_t lrViewPort(int x, int y, int w, int h){
-    float depth = 1000.f;
+    float depth = 100000.f;
 
     mat4f_t m;
     m[0][3] = x+w/2.f;

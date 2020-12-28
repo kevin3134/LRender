@@ -148,7 +148,7 @@ int main(){
         //clear states every round
         currentMove = CameraMovement::STOP;
         lrClearColorFramebuffer(framebuffer, vec4f_t(0,0,0,1));
-        lrClearDepthFramebuffer(framebuffer, 10000);
+        lrClearDepthFramebuffer(framebuffer, 1000000);
 
         
         for(int i=0;i<status->mesh->countEBO();i++){
