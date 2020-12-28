@@ -125,84 +125,6 @@ typedef vec4_t<int>   vec4i_t;
 
 //mat related
 
-/*
-struct mat3f_t{
-    float m[3][3];
-
-    mat3f_t(){
-        m[0][0] = 1;
-        m[0][1] = 0;
-        m[0][2] = 0;
-        m[1][0] = 0;
-        m[1][1] = 1;
-        m[1][2] = 0;
-        m[2][0] = 0;
-        m[2][1] = 0;
-        m[2][2] = 1;
-    }
-    mat3f_t(float x1, float y1, float z1,
-        float x2, float y2, float z2,
-        float x3, float y3, float z3){
-            m[0][0] = x1;
-            m[0][1] = y1;
-            m[0][2] = z1;
-            m[1][0] = x2;
-            m[1][1] = y2;
-            m[1][2] = z2;
-            m[2][0] = x3;
-            m[2][1] = y3;
-            m[2][2] = z3;
-        }
-    mat3f_t(float i){ 
-        m[0][0]=m[0][1]=m[0][2]=m[1][0]=m[1][1]=m[1][2]=m[2][0]=m[2][1]=m[2][2]=i;
-    }    
-    mat3f_t(const float mat[3][3]){
-        for(int i=0;i<3;i++){
-            for(int j=0;j<3;j++){
-                m[i][j] = mat[i][j];
-            }
-        }
-    }
-    // mat3f_t(const mat3f_t &V){
-    //     for(int i=0;i<3;i++){
-    //         for(int j=0;j<3;j++){
-    //             m[i][j] = V.m[i][j];
-    //         }
-    //     }
-    // }
-
-    mat3f_t operator *(float f) const { 
-        return mat3f_t(
-            f*m[0][0],f*m[0][1],f*m[0][2], 
-            f*m[1][0],f*m[1][1],f*m[1][2],
-            f*m[2][0],f*m[2][1],f*m[2][2]); 
-    }
-
-    float& operator[](const int i) {
-        if(i<=8){return m[i/3][i%3];}
-        else{throw "incorrect index input in mat3!";}
-    }
-
-    friend std::ostream& operator<<(std::ostream& out, mat3f_t& mat){
-        out << "|" << mat.m[0][0] << ", "<<mat.m[0][1] << ", "<<mat.m[0][2] <<  "|\n";
-        out << "|" << mat.m[1][0] << ", "<<mat.m[1][1] << ", "<<mat.m[1][2] <<  "|\n";
-        out << "|" << mat.m[2][0] << ", "<<mat.m[2][1] << ", "<<mat.m[2][2] <<  "|\n";
-        return out;
-    }
-
-};
-
-
-//TODO: mul function to operater*
-vec3f_t mat3f_mul_vec3f(mat3f_t m, vec3f_t v);
-mat3f_t mat3f_mul_mat3f(mat3f_t a, mat3f_t b);
-mat3f_t mat3f_transpose(mat3f_t m);
-mat3f_t mat3f_inverse(mat3f_t m);
-
-static float mat3f_determinant(mat3f_t m);
-static mat3f_t mat3f_adjoint(mat3f_t m);
-mat3f_t mat3f_inverse_transpose(mat3f_t m);
-*/
 struct mat3f_t{
     vec3f_t m[3];
     void init(vec3f_t row0, vec3f_t row1, vec3f_t row2){
@@ -264,17 +186,14 @@ struct mat3f_t{
         return out;
     }
 
-    // float minor(int r, int c);
-    // float cofactor(int r, int c);
-    float determinant();
 
+    float determinant();
     mat3f_t adjoint();
     mat3f_t inverse();
     mat3f_t transpose();
     mat3f_t inverse_transpose();
 };
 
-//TODO: mat4f_t functions
 struct mat4f_t{
     //4 rows
     vec4f_t m[4];
@@ -353,15 +272,13 @@ struct mat4f_t{
 
 
 
-//commonly used function
+//commonly used math function
 template <class t> t lrMin(t t1, t t2){return t1 < t2 ? t1 : t2;}
 template <class t> t lrMax(t t1, t t2){return t1 > t2 ? t1 : t2;}
 
 template <class t> void lrSwap(t* t1, t* t2){ t temp = *t1; *t1 = *t2; *t2 = temp;}
 
 template <class t> t lrLerp(t t1, t t2, float f){ return (t)(t1 + (t2-t1)*f); }
-
-
 
 vec3f_t lrBarycentric(vec3f_t A, vec3f_t B, vec3f_t C, vec3f_t P);
 

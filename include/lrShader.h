@@ -154,9 +154,6 @@ class lrPhongTangentShader : public lrShader {
 
 
             vec3f_t tempNorm = norms[0]*bar[0]+norms[1]*bar[1]+norms[2]*bar[2];
-            // n4.x = n4.x*2-1;
-            // n4.y = n4.y*2-1;
-            // n4.z = n4.z*2-1;
             n4.w = 0;
 
             mat3f_t A;

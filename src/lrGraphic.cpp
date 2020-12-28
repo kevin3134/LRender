@@ -130,87 +130,6 @@ void lrDrawTriangle2D(framebuffer_t *framebuffer, vec2i_t v1, vec2i_t v2, vec2i_
     } 
 }
 
-void lrDrawTriangle3D(framebuffer_t *framebuffer, vec3i_t *postion, vec4f_t color){
-    //lrBarycentric(vec3f_t A, vec3f_t B, vec3f_t C, vec3f_t P)
-
-    vec3i_t v1= *postion;
-    vec3i_t v2 = *(postion+1);
-    vec3i_t v3 = *(postion+2);
-
-    int width = framebuffer->width;
-    int height = framebuffer->height;
-
-    vec2i_t bboxmin(framebuffer->width-1,  framebuffer->height-1); 
-    vec2i_t bboxmax(0, 0); 
-    vec2i_t clamp(framebuffer->width-1,  framebuffer->height-1); 
-
-
-    bboxmin[0] = lrMax(0, lrMin(lrMin(v1[0],v2[0]),v3[0]));
-    bboxmin[1] = lrMax(0, lrMin(lrMin(v1[1],v2[1]),v3[1]));
-
-    bboxmax[0] = lrMin(framebuffer->width-1, lrMax(lrMax(v1[0],v2[0]),v3[0]));
-    bboxmax[1] = lrMin(framebuffer->width-1, lrMax(lrMax(v1[1],v2[1]),v3[1]));
-
-    vec3i_t P; 
-
-    for (P.x=bboxmin.x; P.x<=bboxmax.x; P.x++) { 
-        for (P.y=bboxmin.y; P.y<=bboxmax.y; P.y++) { 
-            vec3f_t bc_screen  = lrBarycentric(vec3f_t(v1[0],v1[1],v1[2]),vec3f_t(v2[0],v2[1],v2[2]),vec3f_t(v3[0],v3[1],v3[2]),vec3f_t(P[0],P[1],P[2])); 
-            if (bc_screen.x<0 || bc_screen.y<0 || bc_screen.z<0) continue; 
-
-            P.z = v1[2]*bc_screen[0] + v2[2]*bc_screen[1] + v3[2]*bc_screen[2];
-            if(framebuffer->depthBuffer[int(P.x+P.y*width)] < P.z){
-                framebuffer->depthBuffer[int(P.x+P.y*width)] = P.z;
-                lrDrawPoint2D(framebuffer, vec2i_t(P.x,P.y), color); 
-            }
-        } 
-    } 
-}
-
-void lrDrawTriangle3DTexture(framebuffer_t *framebuffer, lrTexture *texture, vec3i_t *postion, vec2f_t *textureUV){
-    vec3i_t v1= *postion;
-    vec3i_t v2 = *(postion+1);
-    vec3i_t v3 = *(postion+2);
-
-    int width = framebuffer->width;
-    int height = framebuffer->height;
-
-    vec2i_t bboxmin(framebuffer->width-1,  framebuffer->height-1); 
-    vec2i_t bboxmax(0, 0); 
-    vec2i_t clamp(framebuffer->width-1,  framebuffer->height-1); 
-
-
-    bboxmin[0] = lrMax(0, lrMin(lrMin(v1[0],v2[0]),v3[0]));
-    bboxmin[1] = lrMax(0, lrMin(lrMin(v1[1],v2[1]),v3[1]));
-
-    bboxmax[0] = lrMin(framebuffer->width-1, lrMax(lrMax(v1[0],v2[0]),v3[0]));
-    bboxmax[1] = lrMin(framebuffer->width-1, lrMax(lrMax(v1[1],v2[1]),v3[1]));
-
-    vec3i_t P; 
-
-    for (P.x=bboxmin.x; P.x<=bboxmax.x; P.x++) { 
-        for (P.y=bboxmin.y; P.y<=bboxmax.y; P.y++) { 
-            if(P.y<0||P.y>800||P.x<0||P.y>800) continue;
-
-            vec3f_t bc_screen  = lrBarycentric(vec3f_t(v1[0],v1[1],v1[2]),vec3f_t(v2[0],v2[1],v2[2]),vec3f_t(v3[0],v3[1],v3[2]),vec3f_t(P[0],P[1],P[2])); 
-            if (bc_screen.x<0 || bc_screen.y<0 || bc_screen.z<0) continue; 
-
-
-            P.z = v1[2]*bc_screen[0] + v2[2]*bc_screen[1] + v3[2]*bc_screen[2];
-
-            vec2f_t uv = textureUV[0]*bc_screen[0] + textureUV[1]*bc_screen[1] + textureUV[2]*bc_screen[2];
-
-            vec4f_t color = texture->lrGetTextureValue(uv);
-
-
-            if(framebuffer->depthBuffer[int(P.x+P.y*width)] > P.z){
-                framebuffer->depthBuffer[int(P.x+P.y*width)] = P.z;
-                lrDrawPoint2D(framebuffer, vec2i_t(P.x,P.y), color); 
-                //framebuffer->drawCount++;
-            }
-        } 
-    } 
-}
 
 void lrDrawTriangleShader(framebuffer_t *framebuffer, vec3i_t *postion, lrShader *shader, lrStatus *status){
     vec3i_t v1= *postion;
@@ -327,7 +246,7 @@ void lrBlitBuffer(framebuffer_t *src, image_t *dst){
 }
 
 
-void lrBlitImage(image_t *src, image_t *dst) {
+void lrBlitImageRGB(image_t *src, image_t *dst) {
     int width = lrMin(src->width, dst->width);
     int height = lrMin(src->height, dst->height);
     int r, c;

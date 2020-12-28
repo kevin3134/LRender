@@ -167,7 +167,6 @@ int main(){
                 screenCoords[j]=vec3i_t(x,y,z);
             }
 
-            //lrDrawTriangle3DTexture(framebuffer, status->texture0, screenCoords, uvs);
             //lrDrawTriangleShader(framebuffer, screenCoords, shader, status);
             lrDrawTriangle(framebuffer, screenCoords, shader, status);
         }

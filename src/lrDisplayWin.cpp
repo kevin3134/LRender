@@ -356,7 +356,7 @@ static void present_surface(window_t *window) {
 
 
 void window_draw_image(window_t *window, image_t *image) {
-    //lrBlitImage(image, window->surface);
+    //lrBlitImageRGB(image, window->surface);
     lrBlitImageBGR(image, window->surface);
     present_surface(window);
 }

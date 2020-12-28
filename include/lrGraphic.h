@@ -24,7 +24,7 @@ void framebuffer_clear_depth(framebuffer_t *framebuffer, float depth);
 
 //copy image data from source to target
 void lrBlitBuffer(framebuffer_t *source, image_t *target);
-void lrBlitImage(image_t *source, image_t *target);
+void lrBlitImageRGB(image_t *source, image_t *target);
 
 void lrBlitImageBGR(image_t *source, image_t *target);
 
@@ -34,12 +34,8 @@ void lrDrawLine2D(framebuffer_t *framebuffer, vec2i_t v1, vec2i_t v2, vec4f_t co
 void lrDrawTriangleLine2D(framebuffer_t *framebuffer, vec2i_t v1, vec2i_t v2, vec2i_t v3, vec4f_t color);
 
 
-
+//direct draw triangle to screen with 3 vertex in screen
 void lrDrawTriangle2D(framebuffer_t *framebuffer, vec2i_t v1, vec2i_t v2, vec2i_t v3, vec4f_t color);
-void lrDrawTriangle3D(framebuffer_t *framebuffer, vec3i_t *postion, vec4f_t color);
-
-void lrDrawTriangle3DTexture(framebuffer_t *framebuffer, lrTexture *texture, vec3i_t *postion, vec2f_t *textureUV);
-void lrDrawTriangleShader(framebuffer_t *framebuffer, vec3i_t *postion, lrShader *shader, lrStatus *status);
 
 void lrDrawTriangle(framebuffer_t *framebuffer, vec3i_t *postion, lrShader *shader, lrStatus *status);
 
