@@ -17,10 +17,10 @@ typedef struct {
 
 framebuffer_t *lrCreateFramebuffer(int width, int height);
 void lrReleaseFramebuffer(framebuffer_t *framebuffer);
+
 void lrClearColorFramebuffer(framebuffer_t *framebuffer, vec4f_t color);
 void lrClearDepthFramebuffer(framebuffer_t *framebuffer, float depth);
-
-void framebuffer_clear_depth(framebuffer_t *framebuffer, float depth);
+void lrClearDefault(framebuffer_t *framebuffer);
 
 //copy image data from source to target
 void lrBlitBuffer(framebuffer_t *source, image_t *target);

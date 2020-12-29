@@ -16,8 +16,6 @@ static unsigned char float_to_uchar(float value) {
 
 
 framebuffer_t *lrCreateFramebuffer(int width, int height) {
-    vec4f_t defaultColor = {0, 0, 0, 1};
-    float defaultDepth = 1000000;
     int num_elems = width * height;
     framebuffer_t *framebuffer;
 
@@ -29,8 +27,8 @@ framebuffer_t *lrCreateFramebuffer(int width, int height) {
     framebuffer->colorBuffer = (vec4f_t*)malloc(sizeof(vec4f_t) * num_elems);
     framebuffer->depthBuffer = (float*)malloc(sizeof(float) * num_elems);
 
-    lrClearColorFramebuffer(framebuffer, defaultColor);
-    lrClearDepthFramebuffer(framebuffer, defaultDepth);
+    lrClearDefault(framebuffer);
+
     return framebuffer;
 }
 
@@ -53,6 +51,15 @@ void lrClearDepthFramebuffer(framebuffer_t *framebuffer, float depth) {
         framebuffer->depthBuffer[i] = depth;
     }
 }
+
+void lrClearDefault(framebuffer_t *framebuffer){
+    vec4f_t defaultColor = {0, 0, 0, 1};
+    float defaultDepth = 1000000;
+
+    lrClearColorFramebuffer(framebuffer, defaultColor);
+    lrClearDepthFramebuffer(framebuffer, defaultDepth);
+}
+
 
 void lrDrawPoint2D(framebuffer_t *framebuffer, vec2i_t v, vec4f_t color){
     //y * width + x
@@ -105,8 +112,6 @@ void lrDrawTriangleLine2D(framebuffer_t *framebuffer, vec2i_t v1, vec2i_t v2, ve
 
 
 void lrDrawTriangle2D(framebuffer_t *framebuffer, vec2i_t v1, vec2i_t v2, vec2i_t v3, vec4f_t color){
-    //lrBarycentric(vec3f_t A, vec3f_t B, vec3f_t C, vec3f_t P)
-
     vec2i_t bboxmin(framebuffer->width-1,  framebuffer->height-1); 
     vec2i_t bboxmax(0, 0); 
     vec2i_t clamp(framebuffer->width-1,  framebuffer->height-1); 
