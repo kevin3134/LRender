@@ -20,6 +20,10 @@ void image_t::init(int w, int h, int c){
     memset(buffer, 0, buffer_size);
 }
 
+image_t::image_t(const char *filename){
+
+}
+
 image_t::~image_t(){
     free(buffer);
 }
@@ -27,9 +31,6 @@ image_t::~image_t(){
 //TODO: 1, modified style 2, some functions into constructor
 
 
-
-// void lrSaveImage(image_t *image, const char *filename) {
-// }
 
 
 /* image processing */
@@ -129,6 +130,11 @@ static void load_tga_rle(FILE *file, image_t *image) {
 
 
 image_t *lrLoadTGAImage(const char *filename){
+    //if input is set to be none, skip check file valid
+    if(strcmp(filename, "none")==0){
+        return nullptr;
+    }
+
     unsigned char header[TGA_HEADER_SIZE];
     int width, height, depth, channels;
     int idlength, imgtype, imgdesc;

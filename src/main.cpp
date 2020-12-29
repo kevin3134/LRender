@@ -101,15 +101,16 @@ int main(){
 
     status->mesh = new lrMesh("../resource/crab/crab.obj");
     image_t * imageDiff = lrLoadTGAImage("../resource/crab/crab_diffuse.tga");
+    image_t * imageNorm = lrLoadTGAImage("none");
     image_t * imageNormTang = lrLoadTGAImage("../resource/crab/crab_normal.tga");
     image_t * imageSpec = lrLoadTGAImage("../resource/crab/crab_specular.tga");
 
 
-    status->texture0 = new lrColorTexture(imageDiff);
-    //status->texture1 = new lrNormTexture(imageNorm);
-    status->texture2 = new lrSpecTexture(imageSpec);
-    status->texture3 = new lrNormTexture(imageNormTang);
-
+    //init status
+    status->texture0 = imageDiff == nullptr ? nullptr : new lrColorTexture(imageDiff);
+    status->texture1 = imageNorm == nullptr ? nullptr : new lrNormTexture(imageNorm);
+    status->texture2 = imageSpec == nullptr ? nullptr : new lrSpecTexture(imageSpec);
+    status->texture3 = imageNormTang == nullptr ? nullptr : new lrNormTexture(imageNormTang);
 
     status->camera = new lrCamera();
     status->camera->setEye(vec3f_t(0,0,0));

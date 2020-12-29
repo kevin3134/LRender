@@ -8,9 +8,10 @@ class image_t{
         image_t(int w, int h, int c){init(w,h,c);}
         image_t(const char *filename);
         ~image_t();
-        
+
         int width, height, channels; 
         unsigned char *buffer;
+        // bool valid = false;
     
 };
 

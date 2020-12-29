@@ -3,8 +3,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-// lrTexture::lrTexture(const char *filename){
-// }
         
 lrTexture::lrTexture(image_t *image){
     width = image->width;
