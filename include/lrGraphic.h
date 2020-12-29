@@ -74,5 +74,15 @@ static mat4f_t lrPerspective(float fovy, float aspect, float near, float far){
     return m;
 }
 
+static bool lrShouldClip(vec4f_t vetex){
+    if(abs(vetex.x)>abs(vetex.w)||
+       abs(vetex.y)>abs(vetex.w)||
+       abs(vetex.z)>abs(vetex.w)){
+
+        return true;
+    }
+    return false;
+} 
+
 
 #endif

@@ -29,7 +29,8 @@ This is a software renderer currently based on windows.
 - [ ] PBR  
 - [ ] 环境光照  
 - [ ] 材质查看器  
-- [ ] MSAA
+- [ ] MSAA  
+- [ ] 多个物体  
 
 
 

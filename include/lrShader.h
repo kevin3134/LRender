@@ -143,7 +143,7 @@ class lrPhongTangentShader : public lrShader {
 
             ndc_tri[nthvert] = vec3f_t(gl_Vertex.x/gl_Vertex.w,gl_Vertex.y/gl_Vertex.w, gl_Vertex.z/gl_Vertex.w);
 
-            return status->viewPort * status->projection * status->view * status->model * gl_Vertex;
+            return status->projection * status->view * status->model * gl_Vertex;
         }
 
         virtual bool fragment(vec3f_t bar, vec4f_t &color, lrStatus *status){

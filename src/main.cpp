@@ -161,6 +161,15 @@ int main(){
             for(int j=0;j<3;j++){
                 vec4f_t screenCoords4D = shader->vertex(i,j,status);
 
+                // 简单齐次裁剪（有一个点就裁剪）
+                // 目前viewport不是全屏，所有裁剪显示会有问题
+                // if(lrShouldClip(screenCoords4D)){
+                //     goto clipTriangle;
+                // }
+
+                //clip coord to screen coord
+                screenCoords4D = status->viewPort * screenCoords4D;
+
                 int x = screenCoords4D.x/screenCoords4D.w;
                 int y = screenCoords4D.y/screenCoords4D.w;
                 int z = screenCoords4D.z/screenCoords4D.w;
@@ -169,6 +178,8 @@ int main(){
             }
 
             lrDrawTriangle(framebuffer, screenCoords, shader, status);
+
+            clipTriangle:;
         }
 
         window_draw_buffer(window, framebuffer);
