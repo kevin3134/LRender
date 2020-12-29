@@ -167,7 +167,6 @@ int main(){
                 screenCoords[j]=vec3i_t(x,y,z);
             }
 
-            //lrDrawTriangleShader(framebuffer, screenCoords, shader, status);
             lrDrawTriangle(framebuffer, screenCoords, shader, status);
         }
 
@@ -176,9 +175,8 @@ int main(){
     }
 
     window_destroy(window);
-    lrReleaseImage(imageDiff);
-    //lrReleaseImage(imageNorm);
-    lrReleaseImage(imageSpec);
+
+
     lrReleaseFramebuffer(framebuffer);
 
 

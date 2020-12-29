@@ -8,37 +8,28 @@
 #include "../include/lrMath.h"
 
 
-/* image creating/releasing */
+void image_t::init(int w, int h, int c){
+    int buffer_size = w * h * c;
+
+    assert(w > 0 && h > 0 && c >= 1 && c <= 4);
+
+    width = w;
+    height = h;
+    channels = c;
+    buffer = (unsigned char*)malloc(buffer_size);
+    memset(buffer, 0, buffer_size);
+}
+
+image_t::~image_t(){
+    free(buffer);
+}
+
 //TODO: 1, modified style 2, some functions into constructor
-image_t *lrCreateImage(int width, int height, int channels) {
-    int buffer_size = width * height * channels;
-    image_t *image;
 
-    assert(width > 0 && height > 0 && channels >= 1 && channels <= 4);
 
-    image = (image_t*)malloc(sizeof(image_t));
-    image->width = width;
-    image->height = height;
-    image->channels = channels;
-    image->buffer = (unsigned char*)malloc(buffer_size);
-    memset(image->buffer, 0, buffer_size);
 
-    return image;
-}
-
-void lrReleaseImage(image_t *image) {
-    free(image->buffer);
-    free(image);
-}
-
-/*
-image_t *lrLoadImage(const char *filename) {
-    return NULL;
-}
-*/
-
-void lrSaveImage(image_t *image, const char *filename) {
-}
+// void lrSaveImage(image_t *image, const char *filename) {
+// }
 
 
 /* image processing */
@@ -155,7 +146,7 @@ image_t *lrLoadTGAImage(const char *filename){
     assert(depth == 8 || depth == 24 || depth == 32);
     channels = depth / 8;
 
-    image = lrCreateImage(width, height, channels);
+    image = new image_t(width, height, channels);
 
 
     idlength = header[0];
