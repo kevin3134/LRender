@@ -80,7 +80,7 @@ https://learnopengl-cn.github.io/05%20Advanced%20Lighting/04%20Normal%20Mapping/
 
 
 #### 关于高光贴图  
-
+高光是一种材质类的贴图，要结合法线贴图一起使用
 
 
 #### 关于GLM
