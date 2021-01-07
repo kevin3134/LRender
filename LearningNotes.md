@@ -82,6 +82,10 @@ https://learnopengl-cn.github.io/05%20Advanced%20Lighting/04%20Normal%20Mapping/
 #### 关于高光贴图  
 
 
+#### 齐次裁剪  
+
+
+
 
 #### 关于GLM
 视图矩阵和投影矩阵来自GLM库，但是GLM库中的矩阵是和我们认知矩阵转置的  
