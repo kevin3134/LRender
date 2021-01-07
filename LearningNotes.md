@@ -87,10 +87,8 @@ https://learnopengl-cn.github.io/05%20Advanced%20Lighting/04%20Normal%20Mapping/
 简单的方式是直接裁剪掉在区域外的三角形，但这会导致图形边缘不整齐  
 完整的方法需要把裁剪的三角形变化为区域内（xyz都小于w的三角形） 
 
-#### 齐次裁剪  
-
-
-
+https://blog.csdn.net/softwarekid/article/details/45055253    
+https://gameinstitute.qq.com/community/detail/117556    
 
 #### 关于GLM
 视图矩阵和投影矩阵来自GLM库，但是GLM库中的矩阵是和我们认知矩阵转置的  
