@@ -13,7 +13,6 @@ This is a software renderer currently based on windows.
 - [x] 无外部依赖  
 - [x] 窗口和可移动相机  
 - [ ] 多线程  
-- [x] 可编程的渲染管线  
 - [x] 状态机    
 - [ ] 齐次裁剪  
 - [x] 透视插值  
